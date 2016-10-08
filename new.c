@@ -1,6 +1,6 @@
 #include <stdio.h>
 
 int main() {
-printf ("I made it");
+printf ("Printing my first GitHub file");
 return 0;
 }
