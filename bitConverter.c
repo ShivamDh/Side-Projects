@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+ 
 int main() {
 	uint64_t number1 = 0;
 	printf("Enter a positive number to transfer into bit form: ");
