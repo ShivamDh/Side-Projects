@@ -32,8 +32,8 @@ float stdev (float numbers, float values []) { // Function for finding standard 
 	mean = sum/numbers;
 	
 	for (uint8_t j = 0; j<numbers; j++) {
-		standarddev += pow (values[j]-mean, 2);
+		standarddev += pow (values[j]-mean, 2); // Find the sum of the squared differences between the mean and value
 	}
 	
-	return sqrt(standarddev/numbers); //Return value of standarad deviation
+	return sqrt(standarddev/numbers); //Return value of standard deviation
 }
