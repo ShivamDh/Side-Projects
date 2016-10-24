@@ -25,7 +25,7 @@ int main () {
 		default: printf ("Sorry wrong number entered \n"); return -1;
 		break;
 	}
-	printf("The operation is equal to %d", answer); 
+	printf("The operation is equal to %d", answer); //Give back answer in decimal form
 	
 	
 	return 0;
