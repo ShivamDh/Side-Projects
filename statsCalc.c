@@ -6,7 +6,7 @@ float mean (float given_values[], float total_numbers);
 int main () {
 	int numbers;
 	printf ("How many numbers will you be inputting: ");
-	scanf("%d", &numbers); // Ask users for how many numbers to be inputted
+	scanf("%d", &numbers);
 	
 	float values [numbers];
 	printf ("Enter numbers one-by-one: \n");
@@ -19,7 +19,29 @@ int main () {
 	\n (1) Sample Mean \n (2) Population Mean \n (3) Mode \n (4) Median \
 	\n (5) Sample Standard Deviation \n (6) Population Standard Deviation\
 	\n (7) Sample Variance \n (8) Population Variance \n Enter choice:  ");
-	// Print out options for the user to select
+	
+	int total=0; int options[8];
+	for (int j = 0; j< 8; j++) {
+		scanf ("%d", &options[j]);
+		if (options[j] > 8) {
+			printf ("Invalid input, start over please");
+			return -1;
+		}
+		if (options[j] == 0)
+			break;
+		total++;
+		
+	}
+	
+	for (int k = 0; k < 8; k++) {
+		switch (options[k]) {
+			case 1: printf ("The sample mean is: \n "); // Create mean function
+			break;
+			case 2: printf ("The population mean is: \n"); // Use same mean function
+			break;
+			default: printf ("Error");
+			break;
+		}
+	}
 	
 	return 0;
-}
