@@ -35,9 +35,9 @@ int main () {
 	
 	for (int k = 0; k < 8; k++) {
 		switch (options[k]) {
-			case 1: printf ("The sample mean is: \n "); // Create mean function
+			case 1: printf ("The sample mean is: %f \n", mean (values, numbers));
 			break;
-			case 2: printf ("The population mean is: \n"); // Use same mean function
+			case 2: printf ("The population mean is: %f \n", mean (values, numbers));
 			break;
 			default: printf ("Error");
 			break;
@@ -45,3 +45,17 @@ int main () {
 	}
 	
 	return 0;
+}
+
+
+float mean (float given_values[], float total_numbers) { // Function for finding mean
+	float sum = 0; float mean = 0;
+	
+	for (int z = 0; z<total_numbers; z++) {
+		sum += given_values[z]; // Find sum of values
+	}
+	
+	mean = sum/total_numbers; 
+	
+	return mean; //Return value of mean
+}
