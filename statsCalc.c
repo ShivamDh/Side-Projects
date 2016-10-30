@@ -69,18 +69,33 @@ float mode(float given_values[], int total_numbers) { // Function for finding mo
 	float diff_values[total_numbers];  // Initalization of variables and array values
 	int max_count[total_numbers];
 	int appearances = 0;
-	for (int x = 0; x < total_numbers; x++) {
-		diff_values[x] = 0;
-		max_count[x] = 0;
+	for (int v = 0; v < total_numbers; v++) {
+		diff_values[v] = 0;
+		max_count[v] = 0;
 	} 
 	
 	for (int y = 0; y < total_numbers; y++) {
 		for (int x = 0; x < total_numbers; x++) {
-			if (diff_values[x] != given_values[y]) { // Check for diff values
-				diff_values[x] = given_values[y]; 
-				max_count[x] += 1; // Keep a running count 
+			if (diff_values[x] == 0 && (diff_values[x] != given_values[y])) { // Check for different values
+				diff_values[x] = given_values[y]; // Update the different value array
+				max_count[x] += 1; 
+				appearances++; // Create a running list of number of different values
+				break;
+			} else if (diff_values[x] != given_values[y]) {
+				continue; // Skip to next iteration if analyzed number is different from different value array number
+			} else {
+				max_count[x] += 1; // Add to the count of how many times a particular number matches if 
 				break;
 			}
-			}
 		}
+	}
+	float most_common = 0; float mode_value; int multiple_modes = 0; float multi_mode_value;
+	for (int w = 0; w < appearances; w++) {
+		if (most_common < max_count[w]) { 
+			// Write code for checking which "diff" number has the highest counts
 }
+
+
+
+
+
