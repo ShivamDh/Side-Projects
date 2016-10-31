@@ -94,8 +94,3 @@ float mode(float given_values[], int total_numbers) { // Function for finding mo
 		if (most_common < max_count[w]) { 
 			// Write code for checking which "diff" number has the highest counts
 }
-
-
-
-
-
