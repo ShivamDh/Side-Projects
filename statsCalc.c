@@ -42,7 +42,7 @@ int main () {
 			break;
 			case 2: printf ("The population mean is: %f \n", mean (values, numbers));
 			break;
-			case 3: mode (values, numbers);
+			case 3: printf ("The mode value is: %f \n", mode (values, numbers));
 			break;
 			default: printf ("An error, try again please");
 			break;
@@ -78,7 +78,7 @@ float mode(float given_values[], int total_numbers) { // Function for finding mo
 		for (int x = 0; x < total_numbers; x++) {
 			if (diff_values[x] == 0 && (diff_values[x] != given_values[y])) { // Check for different values
 				diff_values[x] = given_values[y]; // Update the different value array
-				max_count[x] += 1; 
+				max_count[x] += 1; // Keep a running count of how many of each different number appear
 				appearances++; // Create a running list of number of different values
 				break;
 			} else if (diff_values[x] != given_values[y]) {
@@ -88,9 +88,12 @@ float mode(float given_values[], int total_numbers) { // Function for finding mo
 				break;
 			}
 		}
-	}
 	float most_common = 0; float mode_value; int multiple_modes = 0; float multi_mode_value;
 	for (int w = 0; w < appearances; w++) {
-		if (most_common < max_count[w]) { 
-			// Write code for checking which "diff" number has the highest counts
+		if (most_common < max_count[w]) { // Find the highest number of counts for a particular different value
+			most_common = max_count[w];
+			mode_value = diff_values[w];
+		}
+	}
+	return mode_value;
 }
