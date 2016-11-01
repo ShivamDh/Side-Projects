@@ -95,5 +95,5 @@ float mode(float given_values[], int total_numbers) { // Function for finding mo
 			mode_value = diff_values[w];
 		}
 	}
-	return mode_value;
+	return mode_value; // Give back this mode value
 }
