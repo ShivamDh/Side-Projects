@@ -42,7 +42,9 @@ int main () {
 			break;
 			case 2: printf ("The population mean is: %f \n", mean (values, numbers));
 			break;
-			case 3: printf ("The mode value is: %f \n", mode (values, numbers));
+			case 3: mode (values, numbers);
+			break;
+			case 4:
 			break;
 			default: printf ("An error, try again please");
 			break;
@@ -88,12 +90,20 @@ float mode(float given_values[], int total_numbers) { // Function for finding mo
 				break;
 			}
 		}
+	}
 	float most_common = 0; float mode_value; int multiple_modes = 0; float multi_mode_value;
 	for (int w = 0; w < appearances; w++) {
 		if (most_common < max_count[w]) { // Find the highest number of counts for a particular different value
 			most_common = max_count[w];
 			mode_value = diff_values[w];
+		} else if (most_common == max_count[w]) { // A check to see if multiple modes exist
+			multiple_modes++;
+			multi_mode_value = most_common;
 		}
 	}
-	return mode_value; // Give back this mode value
+	
+	if (multiple_modes > 0 && most_common == multi_mode_value) 
+		printf ("No unique mode value"); // Since multiple modes exist, no unique mode present
+	else
+		printf ("The mode of the data is: %f", mode_value); // Print mode value
 }
