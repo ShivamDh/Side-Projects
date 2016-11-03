@@ -3,6 +3,10 @@
 
 float mean (float given_values[], float total_numbers);
 float mode(float given_values[], int total_numbers);
+float stdev_sample (float given_values [], int total_numbers);
+double var_sample (float stdev);
+float stdev_pop (float given_values [], int total_numbers);
+double var_pop (float stdev);
 
 int main () {
 	int numbers;
@@ -19,7 +23,7 @@ int main () {
 	printf ("Enter the option number(s) you would like, enter 0 to end choice selection\
 	\n (1) Sample Mean \n (2) Population Mean \n (3) Mode \n (4) Median \
 	\n (5) Sample Standard Deviation \n (6) Population Standard Deviation\
-	\n (7) Sample Variance \n (8) Population Variance \n Enter choice:  ");
+	\n (7) Sample Variance \n (8) Population Variance \n Enter choice: \n");
 	// Print out options for the user to select
 	
 	int total=0; int options[8];
@@ -43,8 +47,6 @@ int main () {
 			case 2: printf ("The population mean is: %f \n", mean (values, numbers));
 			break;
 			case 3: mode (values, numbers);
-			break;
-			case 4:
 			break;
 			default: printf ("An error, try again please");
 			break;
@@ -106,4 +108,20 @@ float mode(float given_values[], int total_numbers) { // Function for finding mo
 		printf ("No unique mode value"); // Since multiple modes exist, no unique mode present
 	else
 		printf ("The mode of the data is: %f", mode_value); // Print mode value
+}
+
+float stdev_sample (float given_values [], int total_numbers) { // Function for finding standard deviation
+	float sum = 0; float mean = 0; float standarddev = 0;
+	
+	for (int r = 0; r<total_numbers; r++) {
+		sum + given_values[r]; // Find mean of values
+	}
+	
+	mean = sum/total_numbers;
+	
+	for (int q = 0; q<=total_numbers; q++) {
+		standarddev += pow (given_values[q]-mean, 2);
+	}
+	
+	return sqrt(standarddev/(total_numbers-1)); //Return value of standard deviation
 }
