@@ -114,14 +114,30 @@ float stdev_sample (float given_values [], int total_numbers) { // Function for 
 	float sum = 0; float mean = 0; float standarddev = 0;
 	
 	for (int r = 0; r<total_numbers; r++) {
-		sum + given_values[r]; // Find mean of values
+		sum += given_values[r]; // Find mean of values
 	}
 	
 	mean = sum/total_numbers;
 	
-	for (int q = 0; q<=total_numbers; q++) {
+	for (int q = 0; q<total_numbers; q++) {
 		standarddev += pow (given_values[q]-mean, 2);
 	}
 	
 	return sqrt(standarddev/(total_numbers-1)); //Return value of standard deviation
+}
+
+float stdev_pop (float given_values [], int total_numbers) { // Function for finding standard deviation
+	float sum = 0; float mean = 0; float standarddev = 0;
+	
+	for (int v = 0; v<total_numbers; v++) {
+		sum += given_values[v]; // Find mean of values
+	}
+	
+	mean = sum/total_numbers;
+	
+	for (int u = 0; u<total_numbers; u++) {
+		standarddev += pow (given_values[u]-mean, 2);
+	}
+	
+	return sqrt(standarddev/total_numbers); //Return value of standard deviation
 }
