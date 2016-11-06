@@ -48,6 +48,14 @@ int main () {
 			break;
 			case 3: mode (values, numbers);
 			break;
+			case 5: printf ("The sample standard deviation is: %f \n", stdev_sample(values, numbers));
+			break;
+			case 6: printf ("The population standard deviation is : %f \n", stdev_pop(values, numbers));
+			break;
+			case 7: printf ("The sample variance is: %f \n", var_sample(stdev_sample(values, numbers)));
+			break;
+			case 8: printf ("The population variance is %f \n", var_pop (stdev_pop(values, numbers)));
+			break;
 			default: printf ("An error, try again please");
 			break;
 		}
@@ -126,6 +134,12 @@ float stdev_sample (float given_values [], int total_numbers) { // Function for 
 	return sqrt(standarddev/(total_numbers-1)); //Return value of standard deviation
 }
 
+double var_sample (float stdev) {
+	double var = pow ((double)stdev, 2.0);
+	
+	return var;
+}
+
 float stdev_pop (float given_values [], int total_numbers) { // Function for finding standard deviation
 	float sum = 0; float mean = 0; float standarddev = 0;
 	
@@ -141,3 +155,10 @@ float stdev_pop (float given_values [], int total_numbers) { // Function for fin
 	
 	return sqrt(standarddev/total_numbers); //Return value of standard deviation
 }
+
+double var_pop (float stdev) {
+	double var = pow ((double)stdev, 2.0);
+	
+	return var;
+}
+
