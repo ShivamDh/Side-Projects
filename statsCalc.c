@@ -3,6 +3,7 @@
 
 float mean (float given_values[], float total_numbers);
 float mode(float given_values[], int total_numbers);
+float median (float given_values[], int total_numbers);
 float stdev_sample (float given_values [], int total_numbers);
 double var_sample (float stdev);
 float stdev_pop (float given_values [], int total_numbers);
@@ -14,16 +15,16 @@ int main () {
 	scanf("%d", &numbers); // Ask users for how many numbers to be inputted
 	
 	float values [numbers];
-	printf ("Enter numbers one-by-one: \n");
+	printf ("\nEnter numbers one-by-one: \n");
 	for (int i = 0; i < numbers; i++) {
 		printf ("Number %d: ", ++i);
 		scanf ("%f", &values[--i]);
 	} // Ask user for all numbers to be used for the statistics
 	
-	printf ("Enter the option number(s) you would like, enter 0 to end choice selection\
-	\n (1) Sample Mean \n (2) Population Mean \n (3) Mode \n (4) Median \
-	\n (5) Sample Standard Deviation \n (6) Population Standard Deviation\
-	\n (7) Sample Variance \n (8) Population Variance \n Enter choice: \n");
+	printf ("\nEnter the option number(s) you would like, enter 0 to end choice selection\
+	\n   (1) Sample Mean \n   (2) Population Mean \n   (3) Mode \n   (4) Median \
+	\n   (5) Sample Standard Deviation \n   (6) Population Standard Deviation\
+	\n   (7) Sample Variance \n   (8) Population Variance \nEnter choice: \n");
 	// Print out options for the user to select
 	
 	int total=0; int options[8];
@@ -42,19 +43,21 @@ int main () {
 	for (int k = 0; k < total; k++) {
 		switch (options[k]) {
 			case 0: return -1;
-			case 1: printf ("The sample mean is: %f \n", mean (values, numbers));
+			case 1: printf ("The sample mean is: %.2f \n", mean (values, numbers));
 			break;
-			case 2: printf ("The population mean is: %f \n", mean (values, numbers));
+			case 2: printf ("The population mean is: %.2f \n", mean (values, numbers));
 			break;
 			case 3: mode (values, numbers);
 			break;
-			case 5: printf ("The sample standard deviation is: %f \n", stdev_sample(values, numbers));
+			case 4: printf ("\nThe median is %.2f \n", median (values, numbers));
 			break;
-			case 6: printf ("The population standard deviation is : %f \n", stdev_pop(values, numbers));
+			case 5: printf ("The sample standard deviation is: %.2f \n", stdev_sample(values, numbers));
 			break;
-			case 7: printf ("The sample variance is: %f \n", var_sample(stdev_sample(values, numbers)));
+			case 6: printf ("The population standard deviation is: %.2f \n", stdev_pop(values, numbers));
 			break;
-			case 8: printf ("The population variance is %f \n", var_pop (stdev_pop(values, numbers)));
+			case 7: printf ("The sample variance is: %.2f \n", var_sample(stdev_sample(values, numbers)));
+			break;
+			case 8: printf ("The population variance is %.2f \n", var_pop (stdev_pop(values, numbers)));
 			break;
 			default: printf ("An error, try again please");
 			break;
@@ -115,7 +118,29 @@ float mode(float given_values[], int total_numbers) { // Function for finding mo
 	if (multiple_modes > 0 && most_common == multi_mode_value) 
 		printf ("No unique mode value"); // Since multiple modes exist, no unique mode present
 	else
-		printf ("The mode of the data is: %f", mode_value); // Print mode value
+		printf ("The mode of the data is: %.2f", mode_value); // Print mode value
+}
+
+float median (float given_values[], int total_numbers) {
+	for (int i = 0; i < total_numbers-1; i++) {
+		if (given_values[i] > given_values[i+1]) {
+			float temp = given_values[i];
+			given_values[i] = given_values[i+1];
+			given_values[i+1] = temp;
+		}
+	}
+
+	float median_value;
+
+	if (total_numbers%2) {
+		median_value = given_values[(total_numbers/2)];
+	} else {
+		float value1 = given_values[(total_numbers/2)-1];
+		float value2 = given_values[(total_numbers/2)];
+		median_value = (value1+value2)/2;
+	}
+
+	return median_value;
 }
 
 float stdev_sample (float given_values [], int total_numbers) { // Function for finding standard deviation
@@ -161,4 +186,3 @@ double var_pop (float stdev) {
 	
 	return var;
 }
-
