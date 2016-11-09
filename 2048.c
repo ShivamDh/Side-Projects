@@ -23,7 +23,15 @@ void printArea (int values[4][4]) {
 	
 	for (int i = 0; i<4; i++) {
 		for (int j = 0; j<4; j++) {
-				printf ("|\t%d\t", values[i][j]);	
+			if (values[i][j] == 0) 
+				printf ("|\t\t");
+			else {
+				if (values[i][j] < 100)
+					printf ("|\t%d\t", values[i][j]);
+				else if (values[i][j] < 1000)
+					printf ("|      %d      ", values[i][j]);	
+				else 
+					printf ("|      %d     ", values[i][j]);	
 		}
 		}
 		printf ("|");
