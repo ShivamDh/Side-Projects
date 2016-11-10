@@ -13,13 +13,31 @@ int main () {
 	printArea(box);
 	
 	int keyboardInput;
+	int secondInput;
 	printf ("Press Esc to exit game\nEnter your next move: ");
 	
 	while ((keyboardInput = _getch()) != 27) {
-		if (keyboardInput == 97 || keyboardInput == 100 || keyboardInput == 119 || keyboardInput == 115)
+		if (keyboardInput == 97) // 'A' button
 			printf ("%d", keyboardInput);
-		else if (keyboardInput == 224)
-			printf ("%d    %d", keyboardInput, _getch());
+		else if (keyboardInput == 100) // 'D' button
+			printf ("%d", keyboardInput);
+		else if (keyboardInput == 119) // 'W' button
+			printf ("%d", keyboardInput);
+		else if (keyboardInput == 115) // 'S' button
+			printf ("%d", keyboardInput);
+		else if (keyboardInput == 224) { // If inputs are from arrow kee
+			secondInput = _getch();
+			if (secondInput == 75)
+				printf ("%d    %d", keyboardInput, secondInput);
+			else if (secondInput == 77)
+				printf ("%d    %d", keyboardInput, secondInput);
+			else if (secondInput == 72)
+				printf ("%d    %d", keyboardInput, secondInput);
+			else if (secondInput == 80)
+				printf ("%d    %d", keyboardInput, secondInput);
+			else 
+				printf ("\nInvalid move, try again");
+		}
 		else 
 			printf ("\nInvalid move, try again");
 		printf("\n");
