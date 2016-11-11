@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 void printArea (int values[4][4]);
+void shiftLeft (int themValues[4][4]);
 
 int main () {
 	int box[4][4] = { {0, 10, 69, 0}, 
@@ -75,3 +76,22 @@ void printArea (int values[4][4]) {
 	}
 }
 
+void shiftLeft (int themValues[4][4]) {
+	for (int c = 0; c < 4; c++) { // move if common numbers exist
+		for (int d = 0; d < 3; d++) {
+			if (themValues[c][d] == themValues[c][d+1]) {
+				themValues[c][d] += themValues[c][d+1];
+				themValues[c][d+1] = 0;
+				if (d < 2) {
+					themValues[c][d+1] = themValues[c][d+2];
+					themValues[c][d+2] = 0;
+				}
+				if (d < 1) {
+					themValues[c][d+2] = themValues[c][d+3];
+					themValues[c][d+3] = 0;
+				}
+				
+			}
+		}
+	}
+}
