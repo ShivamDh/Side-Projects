@@ -77,6 +77,23 @@ void printArea (int values[4][4]) {
 }
 
 void shiftLeft (int themValues[4][4]) {
+	for (int z = 0; z < 4; z++) { // move if empty space exists
+		for (int y = 0; y < 3; y++) {
+			if (themValues[z][y] == 0) {
+				themValues[z][y] = themValues[z][y+1];
+				themValues[z][y+1] = 0;
+				if (y < 2) {
+					themValues[z][y+1] = themValues[z][y+2];
+					themValues[z][y+2] = 0;
+				}
+				if (y < 1) {
+					themValues[z][y+2] = themValues[z][y+3];
+					themValues[z][y+3] = 0;
+				}
+			}
+		}
+	}
+		
 	for (int c = 0; c < 4; c++) { // move if common numbers exist
 		for (int d = 0; d < 3; d++) {
 			if (themValues[c][d] == themValues[c][d+1]) {
