@@ -4,18 +4,22 @@
 
 void printArea (int values[4][4]);
 void shiftLeft (int themValues[4][4]);
+void shiftRight (int themValues[4][4]);
+void shiftUp (int themValues[4][4]);
+void shiftDown (int themValues[4][4]);
 
 int main () {
+	system("cls");
 	int box[4][4] = { {0, 10, 69, 0}, 
-					  {10, 1, 1, 1}, 
-					  {695, 1024, 1, 1},
-					  {5102, 1024, 2048, 8}};
+					  {2048, 1, 1, 2}, 
+					  {1024, 1024, 1, 1},
+					  {1024, 1024, 2048, 8}};
 	
 	printArea(box);
 	
 	int keyboardInput;
 	int secondInput;
-	printf ("Press Esc to exit game\nEnter your next move: ");
+	printf ("\nPress Esc to exit game\nEnter your next move (Left/Right/Up/Down)\n");
 	
 	while ((keyboardInput = _getch()) != 27) {
 		if (keyboardInput == 97) // 'A' button
@@ -114,7 +118,23 @@ void shiftLeft (int themValues[4][4]) {
 }
 
 void shiftRight (int themValues[4][4]) {
-			
+	for (int z = 0; z < 4; z++) { // move if empty space exists
+		for (int y = 3; y > 0; y--) {
+			if (themValues[z][y] == 0) {
+				themValues[z][y] = themValues[z][y-1];
+				themValues[z][y-1] = 0;
+				if (y > 1) {
+					themValues[z][y-1] = themValues[z][y-2];
+					themValues[z][y-2] = 0;
+				}
+				if (y > 2) {
+					themValues[z][y-2] = themValues[z][y-3];
+					themValues[z][y-3] = 0;
+				}
+			}
+		}
+	}
+		
 	for (int c = 0; c < 4; c++) { // move if common numbers exist
 		for (int d = 3; d > 0; d--) {
 			if (themValues[c][d] == themValues[c][d-1]) {
@@ -133,8 +153,3 @@ void shiftRight (int themValues[4][4]) {
 		}
 	}
 }
-
-
-
-
-
