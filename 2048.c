@@ -153,3 +153,24 @@ void shiftRight (int themValues[4][4]) {
 		}
 	}
 }
+
+void shiftUp (int themValues[4][4]) {
+		
+	for (int c = 0; c < 3; c++) { // move if common numbers exist
+		for (int d = 0; d < 4; d++) {
+			if (themValues[c][d] == themValues[c+1][d]) {
+				themValues[c][d] += themValues[c+1][d];
+				themValues[c+1][d] = 0;
+				if (c < 2) {
+					themValues[c+1][d] = themValues[c+2][d];
+					themValues[c+2][d] = 0;
+				}
+				if (c < 1) {
+					themValues[c+2][d] = themValues[c+3][d];
+					themValues[c+3][d] = 0;
+				}
+				
+			}
+		}
+	}
+}
