@@ -155,6 +155,22 @@ void shiftRight (int themValues[4][4]) {
 }
 
 void shiftUp (int themValues[4][4]) {
+	for (int z = 0; z < 3; z++) { // move if empty space exists
+		for (int y = 0; y < 4; y++) {
+			if (themValues[z][y] == 0) {
+				themValues[z][y] = themValues[z+1][y];
+				themValues[z+1][y] = 0;
+				if (z < 2) {
+					themValues[z+1][y] = themValues[z+2][y];
+					themValues[z+2][y] = 0;
+				}
+				if (z < 1) {
+					themValues[z+2][y] = themValues[z+3][y];
+					themValues[z+3][y] = 0;
+				}
+			}
+		}
+	}
 		
 	for (int c = 0; c < 3; c++) { // move if common numbers exist
 		for (int d = 0; d < 4; d++) {
@@ -173,4 +189,8 @@ void shiftUp (int themValues[4][4]) {
 			}
 		}
 	}
+}
+
+void shiftDown (int themValues[4][4]) {
+	
 }
