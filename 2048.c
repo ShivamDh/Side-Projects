@@ -192,5 +192,38 @@ void shiftUp (int themValues[4][4]) {
 }
 
 void shiftDown (int themValues[4][4]) {
-	
+	for (int z = 3; z > 0; z--) { // move if empty space exists
+		for (int y = 0; y < 4; y++) {
+			if (themValues[z][y] == 0) {
+				themValues[z][y] = themValues[z-1][y];
+				themValues[z-1][y] = 0;
+				if (z > 1) {
+					themValues[z-1][y] = themValues[z-2][y];
+					themValues[z-2][y] = 0;
+				}
+				if (z > 2) {
+					themValues[z-2][y] = themValues[z-3][y];
+					themValues[z-3][y] = 0;
+				}
+			}
+		}
+	}
+		
+	for (int c = 3; c > 0; c--) { // move if common numbers exist
+		for (int d = 0; d < 4; d++) {
+			if (themValues[c][d] == themValues[c-1][d]) {
+				themValues[c][d] += themValues[c-1][d];
+				themValues[c-1][d] = 0;
+				if (c > 1) {
+					themValues[c-1][d] = themValues[c-2][d];
+					themValues[c-2][d] = 0;
+				}
+				if (c > 2) {
+					themValues[c-2][d] = themValues[c-3][d];
+					themValues[c-3][d] = 0;
+				}
+				
+			}
+		}
+	}
 }
