@@ -22,32 +22,48 @@ int main () {
 	printf ("\nPress Esc to exit game\nEnter your next move (Left/Right/Up/Down)\n");
 	
 	while ((keyboardInput = _getch()) != 27) {
-		if (keyboardInput == 97) // 'A' button
-			printf ("%d", keyboardInput);
-		else if (keyboardInput == 100) // 'D' button
-			printf ("%d", keyboardInput);
-		else if (keyboardInput == 119) // 'W' button
-			printf ("%d", keyboardInput);
-		else if (keyboardInput == 115) // 'S' button
-			printf ("%d", keyboardInput);
-		else if (keyboardInput == 224) { // If inputs are from arrow kee
+		if (keyboardInput == 97 || keyboardInput == 65) { // 'a' or 'A' button
+			system ("cls");
+			shiftLeft(box);
+			printArea(box);
+		} else if (keyboardInput == 100 || keyboardInput == 68) { // 'D' button
+			system ("cls");
+			shiftRight(box);
+			printArea(box);
+		} else if (keyboardInput == 119 || keyboardInput == 87) { // 'W' button
+			system ("cls");
+			shiftUp(box);
+			printArea(box);
+		} else if (keyboardInput == 115 || keyboardInput == 83) { // 'S' button
+			system ("cls");
+			shiftDown(box);
+			printArea(box);
+		} else if (keyboardInput == 224) { // If inputs are from arrow kee
 			secondInput = _getch();
-			if (secondInput == 75)
-				printf ("%d    %d", keyboardInput, secondInput);
-			else if (secondInput == 77)
-				printf ("%d    %d", keyboardInput, secondInput);
-			else if (secondInput == 72)
-				printf ("%d    %d", keyboardInput, secondInput);
-			else if (secondInput == 80)
-				printf ("%d    %d", keyboardInput, secondInput);
-			else 
+			if (secondInput == 75) { // Left arrow key
+				system ("cls");
+				shiftLeft(box);
+				printArea(box);
+			} else if (secondInput == 77) { // Right arrow key
+				system ("cls");
+				shiftRight(box);
+				printArea(box);
+			} else if (secondInput == 72) { // Up arrow key
+				system ("cls");
+				shiftUp(box);
+				printArea(box);
+			} else if (secondInput == 80) { // Down arrow key
+				system ("cls");
+				shiftDown(box);
+				printArea(box);
+			} else 
 				printf ("\nInvalid move, try again");
-		}
-		else 
+		} else 
 			printf ("\nInvalid move, try again");
 		printf("\n");
-		printf ("Enter your next move: ");
+		printf ("Press Esc to exit game\nEnter your next move (Left/Right/Up/Down)\n");
 	}
+	
 	
 }
 
