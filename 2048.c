@@ -7,13 +7,12 @@ void shiftLeft (int themValues[4][4]);
 void shiftRight (int themValues[4][4]);
 void shiftUp (int themValues[4][4]);
 void shiftDown (int themValues[4][4]);
+int addNumber(int themValues[4][4]);
+int possibleMoves (int themValues[4][4]);
 
 int main () {
 	system("cls");
-	int box[4][4] = { {0, 10, 69, 0}, 
-					  {2048, 1, 1, 2}, 
-					  {1024, 1024, 1, 1},
-					  {1024, 1024, 2048, 8}};
+	int box[4][4] = {0};
 	
 	printArea(box);
 	
@@ -62,8 +61,8 @@ int main () {
 			printf ("\nInvalid move, try again");
 		printf("\n");
 		printf ("Press Esc to exit game\nEnter your next move (Left/Right/Up/Down)\n");
+		
 	}
-	
 	
 }
 
@@ -242,4 +241,29 @@ void shiftDown (int themValues[4][4]) {
 			}
 		}
 	}
+}
+
+int addNumber(int themValues[4][4]) {
+	int rows = rand() % 4;
+	int columns = rand() % 4;
+	int numAdd = ((rand() % 2)*2)+2;
+	bool optout = false;
+	
+	
+	if (themValues[rows][columns] == 0) 
+		themValues[rows][columns] = numAdd;
+	else {
+		for (int ch1 = 0; ch1 < 4; ch1++){
+			for (int ch2 = 0; ch2 < 4; ch2++){
+				if (themValues[ch1][ch2] == 0)
+					optout = true;
+			}
+		}
+		if (optout)
+			addNumber(themValues);
+		else {
+			return -1;
+		}
+	}
+	return 0;
 }
