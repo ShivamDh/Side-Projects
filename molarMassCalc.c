@@ -32,6 +32,68 @@ int main (int argc,char* argv[]) {
 
 float calcMM (char* substance, int length) {
 	float M = 0;
-		
+	
+	int i = 0;
+	
+	for (i; i < length; i++) {
+		switch (substance[i]) {
+			case 'A': M += 1;
+			break;
+			case 'B': M += 2;
+			break;
+			case 'C': M += 3;
+			break;
+			case 'D': M += 4;
+			break;
+			case 'E': M += 5;
+			break;
+			case 'F': M += 6;
+			break;
+			case 'G': M += 7;
+			break;
+			case 'H': M += 8;
+			break;
+			case 'I': M += 9;
+			break;
+			case 'J': M += 10;
+			break;
+			case 'K': M += 11;
+			break;
+			case 'L': M += 12;
+			break;
+			case 'M': M += 13;
+			break;
+			case 'N': M += 14;
+			break;
+			case 'O': M += 15;
+			break;
+			case 'P': M += 16;
+			break;
+			case 'Q': M += 17;
+			break;
+			case 'R': M += 18;
+			break;
+			case 'S': M += 19;
+			break;
+			case 'T': M += 20;
+			break;
+			case 'U': M += 21;
+			break;
+			case 'V': M += 22;
+			break;
+			case 'W': M += 23;
+			break;
+			case 'X': M += 24;
+			break;
+			case 'Y': M += 25;
+			break;
+			case 'Z': M += 26;
+			break;
+			default: printf ("An error has occurred, start over");
+			return -1;
+			break;
+		}
+	}
+	
 	return M;
 }
