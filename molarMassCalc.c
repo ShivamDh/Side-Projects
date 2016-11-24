@@ -51,8 +51,21 @@ float calcMM (char* substance, int length) {
 			break;
 			case 'G': M += 7;
 			break;
-			case 'H': M += 8;
-			break;
+			case 'H':
+				if (substance[i+1] > 96 && substance[i+1] < 123) {
+					i++;
+					switch (substance[i]) {
+						case 'e':
+							M += 4.0026; //helium atom
+							break;
+						default:
+							return -1;
+							break;
+					}
+				} else {
+					M += 1.0079; // hydrogen atom
+				}
+				break;
 			case 'I': M += 9;
 			break;
 			case 'J': M += 10;
