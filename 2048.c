@@ -13,6 +13,7 @@ int possibleMoves (int themValues[4][4]);
 int main () {
 	system("cls");
 	int box[4][4] = {0};
+	addNumber(box);
 	
 	printArea(box);
 	
@@ -61,7 +62,13 @@ int main () {
 			printf ("\nInvalid move, try again");
 		printf("\n");
 		printf ("Press Esc to exit game\nEnter your next move (Left/Right/Up/Down)\n");
+		int point = addNumber(box);
+		int point2 = possibleMoves(box);
 		
+		if (point < 0 && point2 < 0) {
+			printf ("\n/nGame over, no more possible moves");
+			break;
+		}
 	}
 	
 }
@@ -266,4 +273,31 @@ int addNumber(int themValues[4][4]) {
 		}
 	}
 	return 0;
+}
+
+int possibleMoves (int themValues[4][4]) {
+	bool allow = false;
+	
+	for (int q = 0; q < 4; q++) {
+		for (int r = 0; r < 3; r++) {
+			if (themValues[q][r] == themValues[q][r+1]){
+				allow = true;
+				break; break;
+			}
+		}
+	}
+	
+	for (int s = 0; s < 3; s++) {
+		for (int t = 0; t < 4; t++) {
+			if (themValues[s][t] == themValues[s+1][t]) {
+				allow = true;
+				break;break;
+			}
+		}
+	}
+	
+	if (allow)
+		return 0;
+	else
+		return -1;
 }
