@@ -212,8 +212,18 @@ void shiftDown (int themValues[4][4]) {
 	for (int z = 3; z > 0; z--) { // move if empty space exists
 		for (int y = 0; y < 4; y++) {
 			if (themValues[z][y] == 0) {
+				if (z>1 && themValues[z-1][y] == 0) {
+					if (z>2 && themValues[z-2][y] == 0) {
+						themValues[z][y] = themValues[z-3][y];
+						themValues[z-3][y] = 0;
+					} else {
+					themValues[z][y] = themValues[z-2][y];
+					themValues[z-2][y] = 0;
+					}
+				} else {
 				themValues[z][y] = themValues[z-1][y];
 				themValues[z-1][y] = 0;
+				}
 				if (z > 1) {
 					themValues[z-1][y] = themValues[z-2][y];
 					themValues[z-2][y] = 0;
