@@ -11,7 +11,7 @@ int addNumber(int themValues[4][4]);
 int possibleMoves (int themValues[4][4]);
 
 int main () {
-	system("cls");
+	system ("cls");
 	int box[4][4] = {0};
 	addNumber(box);
 	
@@ -59,7 +59,7 @@ int main () {
 		
 		if (point < 0 && point2 < 0) {
 			printArea(box);
-			printf ("\n/nGame over, no more possible moves");
+			printf ("\n\nGame over, no more possible moves");
 			break;
 		}
 		printArea(box);
@@ -101,8 +101,19 @@ void shiftLeft (int themValues[4][4]) {
 	for (int z = 0; z < 4; z++) { // move if empty space exists
 		for (int y = 0; y < 3; y++) {
 			if (themValues[z][y] == 0) {
+				
+				if (y<2 && themValues[z][y+1] == 0) {
+					if (y<1 && themValues[z][y+2] == 0) {
+						themValues[z][y] = themValues[z][y+3];
+						themValues[z][y+3] = 0;
+					} else {
+					themValues[z][y] = themValues[z][y+2];
+					themValues[z][y+2] = 0;
+					}
+				} else {
 				themValues[z][y] = themValues[z][y+1];
 				themValues[z][y+1] = 0;
+				}
 				if (y < 2) {
 					themValues[z][y+1] = themValues[z][y+2];
 					themValues[z][y+2] = 0;
@@ -138,8 +149,18 @@ void shiftRight (int themValues[4][4]) {
 	for (int z = 0; z < 4; z++) { // move if empty space exists
 		for (int y = 3; y > 0; y--) {
 			if (themValues[z][y] == 0) {
+				if (y>1 && themValues[z][y-1] == 0) {
+					if (y>2 && themValues[z][y-2] == 0) {
+						themValues[z][y] = themValues[z][y-3];
+						themValues[z][y-3] = 0;
+					} else {
+					themValues[z][y] = themValues[z][y-2];
+					themValues[z][y-2] = 0;
+					}
+				} else {
 				themValues[z][y] = themValues[z][y-1];
 				themValues[z][y-1] = 0;
+				}
 				if (y > 1) {
 					themValues[z][y-1] = themValues[z][y-2];
 					themValues[z][y-2] = 0;
@@ -175,8 +196,19 @@ void shiftUp (int themValues[4][4]) {
 	for (int z = 0; z < 3; z++) { // move if empty space exists
 		for (int y = 0; y < 4; y++) {
 			if (themValues[z][y] == 0) {
+				
+				if (z<2 && themValues[z+1][y] == 0) {
+					if (z<1 && themValues[z+2][y] == 0) {
+						themValues[z][y] = themValues[z+3][y];
+						themValues[z+3][y] = 0;
+					} else {
+					themValues[z][y] = themValues[z+2][y];
+					themValues[z+2][y] = 0;
+					}
+				} else {
 				themValues[z][y] = themValues[z+1][y];
 				themValues[z+1][y] = 0;
+				}
 				if (z < 2) {
 					themValues[z+1][y] = themValues[z+2][y];
 					themValues[z+2][y] = 0;
@@ -259,7 +291,7 @@ int addNumber(int themValues[4][4]) {
 	int rows = rand() % 4;
 	int columns = rand() % 4;
 	int numAdd = ((rand() % 2)*2)+2;
-	bool optout = false;
+	int optout = 0;
 	
 	
 	if (themValues[rows][columns] == 0) 
@@ -268,10 +300,10 @@ int addNumber(int themValues[4][4]) {
 		for (int ch1 = 0; ch1 < 4; ch1++){
 			for (int ch2 = 0; ch2 < 4; ch2++){
 				if (themValues[ch1][ch2] == 0)
-					optout = true;
+					optout = 1;
 			}
 		}
-		if (optout)
+		if (optout == 1)
 			addNumber(themValues);
 		else {
 			return -1;
@@ -281,12 +313,12 @@ int addNumber(int themValues[4][4]) {
 }
 
 int possibleMoves (int themValues[4][4]) {
-	bool allow = false;
+	int allow = 0;
 	
 	for (int q = 0; q < 4; q++) {
 		for (int r = 0; r < 3; r++) {
 			if (themValues[q][r] == themValues[q][r+1]){
-				allow = true;
+				allow = 1;
 				break; break;
 			}
 		}
@@ -295,13 +327,13 @@ int possibleMoves (int themValues[4][4]) {
 	for (int s = 0; s < 3; s++) {
 		for (int t = 0; t < 4; t++) {
 			if (themValues[s][t] == themValues[s+1][t]) {
-				allow = true;
+				allow = 1;
 				break;break;
 			}
 		}
 	}
 	
-	if (allow)
+	if (allow == 1)
 		return 0;
 	else
 		return -1;
