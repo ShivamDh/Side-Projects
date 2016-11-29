@@ -37,7 +37,23 @@ float calcMM (char* substance, int length) {
 	
 	for (i; i < length; i++) {
 		switch (substance[i]) {
-			case 'A': M += 1;
+			case 'A': 
+				if (substance[i+1] > 96 && substance[i+1] < 123) {
+					i++;
+					switch (substance[i]) {
+						case 'l':
+							M += 26.9815; //aluminium atom
+							break;
+						case 'r':
+							M += 39.984; //argon atom
+							break;
+						default:
+							return -1;
+							break;
+					}
+				} else {
+					return -1;
+				}
 				break;
 			case 'B': 
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
@@ -58,8 +74,11 @@ float calcMM (char* substance, int length) {
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
 					switch (substance[i]) {
-						case 'u':
-							M += 63.546; //copper atom
+						case 'a':
+							M += 40.078; //calcium atom
+							break;
+						case 'l':
+							M += 35.453; //chlorine atom
 							break;
 						default:
 							return -1;
@@ -74,19 +93,7 @@ float calcMM (char* substance, int length) {
 			case 'E': M += 5;
 			break;
 			case 'F': 
-				if (substance[i+1] > 96 && substance[i+1] < 123) {
-					i++;
-					switch (substance[i]) {
-						case 'r':
-							M += 223; //francium atom
-							break;
-						default:
-							return -1;
-							break;
-					}
-				} else {
-					M += 18.998; // fluorine atom
-				}
+				M += 18.998; // fluorine atom
 				break;
 			case 'G': M += 7;
 			break;
@@ -117,7 +124,7 @@ float calcMM (char* substance, int length) {
 					i++;
 					switch (substance[i]) {
 						case 'i':
-							M += 6.941;
+							M += 6.941; //lithium atom
 							break;
 						default:
 							return -1;
@@ -125,7 +132,7 @@ float calcMM (char* substance, int length) {
 					}
 				}
 				break;
-			case 'M':
+			case 'M': 
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
 					switch (substance[i]) {
@@ -145,13 +152,10 @@ float calcMM (char* substance, int length) {
 					i++;
 					switch (substance[i]) {
 						case 'a':
-							M += 22.999;
-							break;
-						case 'i':
-							M += 58.693; // nickel atom
+							M += 22.999; //sodium atom
 							break;
 						case 'e':
-							M += 20.18;
+							M += 20.18; //neon atom
 							break;
 						default:
 							return -1;
@@ -162,28 +166,30 @@ float calcMM (char* substance, int length) {
 				}
 				break;
 			case 'O':
+				M += 16; // oxygen atom
+				break;
+			case 'P': 
+				M += 30.9738; // phosphorus atom
+				break;
+			case 'Q': M += 17;
+			break;
+			case 'R': M += 18;
+			break;
+			case 'S': 
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
 					switch (substance[i]) {
-						case 's':
-							M += 190.23; // osmium atom
+						case 'i':
+							M += 28.086; // silicon atom
 							break;
 						default:
 							return -1;
 							break;
 					}
 				} else {
-					M += 16; // oxygen atom
+					M += 32.065; // sulfur atom
 				}
 				break;
-			case 'P': M += 16;
-			break;
-			case 'Q': M += 17;
-			break;
-			case 'R': M += 18;
-			break;
-			case 'S': M += 19;
-			break;
 			case 'T': M += 20;
 			break;
 			case 'U': M += 21;
