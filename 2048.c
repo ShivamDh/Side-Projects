@@ -11,19 +11,20 @@ int addNumber(int themValues[4][4]);
 int possibleMoves (int themValues[4][4]);
 
 int main () {
-	system ("cls");
-	int box[4][4] = {0};
-	addNumber(box);
+	system ("cls"); //clear screen for game to be presented
+	int box[4][4] = {0}; //initally game box is all zeroes
+	addNumber(box); //add a random number to the box
 	
-	printArea(box);
+	printf ("\nWELCOME TO A FUN GAME OF 2048!!\n\n\n");
+	printf ("\t\t\t\t  A game created by Shivam Dharme\n");
+	printArea(box); //print box
 	
 	int keyboardInput;
 	int secondInput;
-	printf ("\nPress Esc to exit game\nEnter your next move (Left/Right/Up/Down)\n");
+	int invalid = 0;
+	printf ("\nPress Esc or 'Q' to exit game\nEnter your next move (Left/Right/Up/Down)\n");
 	
-	
-	
-	while ((keyboardInput = _getch()) != 27) {
+	while ((keyboardInput = _getch()) != 27 && keyboardInput != 81 && keyboardInput != 113 && keyboardInput != 3) { //continue until escape button is not hit
 		if (keyboardInput == 97 || keyboardInput == 65) { // 'a' or 'A' button
 			system ("cls");
 			shiftLeft(box);
@@ -50,21 +51,37 @@ int main () {
 			} else if (secondInput == 80) { // Down arrow key
 				system ("cls");
 				shiftDown(box);
-			} else 
-				printf ("\nInvalid move, try again");
-		} else 
-			printf ("\nInvalid move, try again");
-		int point = addNumber(box);
-		int point2 = possibleMoves(box);
-		
-		if (point < 0 && point2 < 0) {
-			printArea(box);
-			printf ("\n\nGame over, no more possible moves");
-			break;
+			} else {
+				system("cls");
+				invalid = 1;
+			}
+		} else  {
+			system("cls");
+			invalid = 1;
 		}
+		
+		if (invalid != 1) {
+			int point = addNumber(box);
+			int point2 = possibleMoves(box);
+			
+			if (point < 0 && point2 < 0) {
+				printArea(box);
+				printf ("\n\nGame over, no more possible moves");
+				break;
+			}
+		}
+		
+		printf ("\nWELCOME TO A FUN GAME OF 2048!!\n\n\n");
+		printf ("\t\t\t\t  A game created by Shivam Dharme\n");
 		printArea(box);
-		printf("\nPress Esc to exit game\nEnter your next move (Left/Right/Up/Down)\n");
+		printf("\nPress Esc or 'Q' to exit game\nEnter your next move (Left/Right/Up/Down)\n");
+		
+		if (invalid == 1) {
+			printf ("\n\nInvalid move, check your keys and try again\n\n");
+		}
 	}
+	
+	printf ("\n\nHope you had fun playing!\n\n");
 	
 }
 
