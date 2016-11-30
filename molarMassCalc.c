@@ -80,6 +80,12 @@ float calcMM (char* substance, int length) {
 						case 'l':
 							M += 35.453; //chlorine atom
 							break;
+						case 'o':
+							M += 58.933; //cobalt atom
+							break;
+						case 'r':
+							M += 51.996; //chromium atom
+							break;
 						default:
 							return -1;
 							break;
@@ -93,7 +99,19 @@ float calcMM (char* substance, int length) {
 			case 'E': M += 5;
 			break;
 			case 'F': 
-				M += 18.998; // fluorine atom
+				if (substance[i+1] > 96 && substance[i+1] < 123) {
+					i++;
+					switch (substance[i]) {
+						case 'e':
+							M += 55.845; //iron atom
+							break;
+						default:
+							return -1;
+							break;
+					}
+				} else {
+					M += 18.998; // fluorine atom
+				}
 				break;
 			case 'G': M += 7;
 			break;
@@ -117,7 +135,7 @@ float calcMM (char* substance, int length) {
 			break;
 			case 'J': M += 10;
 			break;
-			case 'K': M += 11;
+			case 'K': M += 39.098; //potassium
 			break;
 			case 'L': 
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
@@ -139,6 +157,9 @@ float calcMM (char* substance, int length) {
 						case 'g':
 							M += 24.305; //magnesium atom
 							break;
+						case 'n':
+							M += 54.938; //manganese atom
+							break;
 						default:
 							return -1;
 							break;
@@ -156,6 +177,9 @@ float calcMM (char* substance, int length) {
 							break;
 						case 'e':
 							M += 20.18; //neon atom
+							break;
+						case 'i':
+							M += 58.693; // nickel atom
 							break;
 						default:
 							return -1;
@@ -179,6 +203,9 @@ float calcMM (char* substance, int length) {
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
 					switch (substance[i]) {
+						case 'c':
+							M += 44.956; // scandium atom
+							break;
 						case 'i':
 							M += 28.086; // silicon atom
 							break;
@@ -190,11 +217,24 @@ float calcMM (char* substance, int length) {
 					M += 32.065; // sulfur atom
 				}
 				break;
-			case 'T': M += 20;
-			break;
+			case 'T' 
+				if (substance[i+1] > 96 && substance[i+1] < 123) {
+					i++;
+					switch (substance[i]) {
+						case 'i':
+							M += 47.867; // titanium atom
+							break;
+						default:
+							return -1;
+							break;
+					}
+				} else {
+					return -1;
+				}
+				break;
 			case 'U': M += 21;
 			break;
-			case 'V': M += 22;
+			case 'V': M += 50.492; //vanadium atom
 			break;
 			case 'W': M += 23;
 			break;
