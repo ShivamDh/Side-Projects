@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-float calcMM (char* substance, int length);
+float M = 0;
+float calcMM (char* substance, int length, int start);
 
 int main (int argc,char* argv[]) {
 	if(argc == 1) { //no command line argumnet for compound
@@ -20,7 +21,7 @@ int main (int argc,char* argv[]) {
 		}
 		printf ("%d", i);
 		
-		float theMM = calcMM(compound1, i);
+		float theMM = calcMM(compound1, i, 0);
 		if (theMM < 0)
 			printf ("An error has occurred, please check the characters used for the formulae");
 		else 
@@ -30,13 +31,82 @@ int main (int argc,char* argv[]) {
 	return 0;
 }
 
-float calcMM (char* substance, int length) {
-	float M = 0;
+float calcMM (char* substance, int length, int start) {
 	
-	int i = 0;
+	int i = start;
 	
+	float bracketMM = 0;
 	for (i; i < length; i++) {
 		switch (substance[i]) {
+			case '2':
+				if (substance[i-1] > 96 && substance[i-1] < 123)
+					calcMM (substance, 2, i-2);
+				else
+					calcMM (substance, 1, i-1);
+				break;
+			case '3':
+				if (substance[i-1] > 96 && substance[i-1] < 123) {
+					for (int repeat = 1; repeat < 3; repeat++)					
+						calcMM (substance, 2, i-2);
+				} else {
+					for (int repeat = 1; repeat < 3; repeat++)					
+						calcMM (substance, 1, i-1);
+				}
+				break;
+			case '4':
+				if (substance[i-1] > 96 && substance[i-1] < 123) {
+					for (int repeat = 1; repeat < 4; repeat++)					
+						calcMM (substance, 2, i-2);
+				} else {
+					for (int repeat = 1; repeat < 4; repeat++)					
+						calcMM (substance, 1, i-1);
+				}
+				break;
+			case '5':
+				if (substance[i-1] > 96 && substance[i-1] < 123) {
+					for (int repeat = 1; repeat < 5; repeat++)					
+						calcMM (substance, 2, i-2);
+				} else {
+					for (int repeat = 1; repeat < 5; repeat++)					
+						calcMM (substance, 1, i-1);
+				}
+				break;
+			case '6':
+				if (substance[i-1] > 96 && substance[i-1] < 123) {
+					for (int repeat = 1; repeat < 6; repeat++)					
+						calcMM (substance, 2, i-2);
+				} else {
+					for (int repeat = 1; repeat < 6; repeat++)					
+						calcMM (substance, 1, i-1);
+				}
+				break;
+			case '7':
+				if (substance[i-1] > 96 && substance[i-1] < 123) {
+					for (int repeat = 1; repeat < 7; repeat++)					
+						calcMM (substance, 2, i-2);
+				} else {
+					for (int repeat = 1; repeat < 7; repeat++)					
+						calcMM (substance, 1, i-1);
+				}
+				break;
+			case '8':
+				if (substance[i-1] > 96 && substance[i-1] < 123) {
+					for (int repeat = 1; repeat < 8; repeat++)					
+						calcMM (substance, 2, i-2);
+				} else {
+					for (int repeat = 1; repeat < 8; repeat++)					
+						calcMM (substance, 1, i-1);
+				}
+				break;
+			case '9':
+				if (substance[i-1] > 96 && substance[i-1] < 123) {
+					for (int repeat = 1; repeat < 9; repeat++)					
+						calcMM (substance, 2, i-2);
+				} else {
+					for (int repeat = 1; repeat < 9; repeat++)					
+						calcMM (substance, 1, i-1);
+				}
+				break;
 			case 'A': 
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
@@ -166,6 +236,9 @@ float calcMM (char* substance, int length) {
 					switch (substance[i]) {
 						case 'e':
 							M += 55.845; //iron atom
+							break;
+						case 'r':
+							M += 223; //francium atom
 							break;
 						default:
 							return -1;
@@ -375,6 +448,9 @@ float calcMM (char* substance, int length) {
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
 					switch (substance[i]) {
+						case 'a':
+							M += 226; //radium atom
+							break;
 						case 'b':
 							M += 85.468; //rubidium atom
 							break;
@@ -515,7 +591,7 @@ float calcMM (char* substance, int length) {
 					return -1;
 				}
 				break;
-			default: printf ("An error has occurred, start over");
+			default: 
 				return -1;
 				break;
 		}
