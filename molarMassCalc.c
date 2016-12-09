@@ -35,9 +35,56 @@ float calcMM (char* substance, int length, int start) {
 	
 	int i = start;
 	
-	float bracketMM = 0;
+	float bracketMM = 0; float tempMM = 0;
 	for (i; i < length; i++) {
 		switch (substance[i]) {
+			case '1':
+				if (substance[i+1] > 47 && substance[i+1] < 58) {
+					tempMM = M;
+					i++;
+					if (substance[i-2] > 96 && substance[i-2] < 123) {
+						calcMM (substance, 2, i-3);
+					} else {
+						calcMM (substance, 1, i-2);
+							}
+					tempMM = M - tempMM;
+					switch (substance[i]) {
+						case '0':
+							M = M + 8*tempMM;
+							break;
+						case '1':
+							M = M + 9*tempMM;
+							break;
+						case '2':
+							M = M + 10*tempMM;
+							break;
+						case '3':
+							M = M + 11*tempMM;
+							break;
+						case '4':
+							M = M + 12*tempMM;
+							break;
+						case '5':
+							M = M + 13*tempMM;
+							break;
+						case '6':
+							M = M + 14*tempMM;
+							break;
+						case '7':
+							M = M + 15*tempMM;
+							break;
+						case '8':
+							M = M + 16*tempMM;
+							break;
+						case '9':
+							M = M + 17*tempMM;
+							break;
+						default:
+							return -1;
+							break;
+					}
+				}
+				break;
 			case '2':
 				if (substance[i-1] > 96 && substance[i-1] < 123)
 					calcMM (substance, 2, i-2);
