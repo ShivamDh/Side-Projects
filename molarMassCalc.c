@@ -3,6 +3,7 @@
 
 float M = 0;
 float calcMM (char* substance, int length, int start);
+int subscript (char* substance, int position);
 
 int main (int argc,char* argv[]) {
 	if(argc == 1) { //no command line argumnet for compound
@@ -29,6 +30,21 @@ int main (int argc,char* argv[]) {
 	}
 	
 	return 0;
+}
+
+int subscript (char* substance, int position) { //new function used to find numeric subscripts
+	int number1 = substance[position];
+	if (number1 < 48 || number1 > 57)
+		return -1;
+	number1 -= 48;
+	if (substance[position+1] > 47 && substance[position+1] < 58) {
+		int number2 = substance[position+1];
+		number2 -= 48;
+		number1 *= 10;
+		number1 += number2;
+	}
+	
+	return number1;
 }
 
 float calcMM (char* substance, int length, int start) {
