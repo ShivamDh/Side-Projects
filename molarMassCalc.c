@@ -54,205 +54,28 @@ float calcMM (char* substance, int length, int start) {
 	float bracketMM = 0; float tempMM = 0;
 	for (i; i < length; i++) {
 		switch (substance[i]) {
-			case '1': //too tedious.... find better solution
-				if (substance[i+1] > 47 && substance[i+1] < 58) {
-					tempMM = M;
-					i++;
-					if (substance[i-2] > 96 && substance[i-2] < 123) {
-						calcMM (substance, 2, i-3);
-					} else {
-						calcMM (substance, 1, i-2);
-							}
-					tempMM = M - tempMM;
-					switch (substance[i]) {
-						case '0':
-							M = M + 8*tempMM;
-							break;
-						case '1':
-							M = M + 9*tempMM;
-							break;
-						case '2':
-							M = M + 10*tempMM;
-							break;
-						case '3':
-							M = M + 11*tempMM;
-							break;
-						case '4':
-							M = M + 12*tempMM;
-							break;
-						case '5':
-							M = M + 13*tempMM;
-							break;
-						case '6':
-							M = M + 14*tempMM;
-							break;
-						case '7':
-							M = M + 15*tempMM;
-							break;
-						case '8':
-							M = M + 16*tempMM;
-							break;
-						case '9':
-							M = M + 17*tempMM;
-							break;
-						default:
-							return -1;
-							break;
-					}
-				}
-				break;
+			case '1':
 			case '2':
-				if (substance[i+1] > 47 && substance[i+1] < 58) {
-					tempMM = M;
-					i++;
-					if (substance[i-2] > 96 && substance[i-2] < 123) {
-						calcMM (substance, 2, i-3);
-					} else {
-						calcMM (substance, 1, i-2);
-							}
-					tempMM = M - tempMM;
-					switch (substance[i]) {
-						case '0':
-							M = M + 18*tempMM;
-							break;
-						case '1':
-							M = M + 19*tempMM;
-							break;
-						case '2':
-							M = M + 20*tempMM;
-							break;
-						case '3':
-							M = M + 21*tempMM;
-							break;
-						case '4':
-							M = M + 22*tempMM;
-							break;
-						case '5':
-							M = M + 23*tempMM;
-							break;
-						case '6':
-							M = M + 24*tempMM;
-							break;
-						case '7':
-							M = M + 25*tempMM;
-							break;
-						case '8':
-							M = M + 26*tempMM;
-							break;
-						case '9':
-							M = M + 27*tempMM;
-							break;
-						default:
-							return -1;
-							break;
-					}
-				} else if (substance[i-1] > 96 && substance[i-1] < 123)
-					calcMM (substance, 2, i-2);
-				else
-					calcMM (substance, 1, i-1);
-				break;
 			case '3':
-				tempMM = M;
-				i++;
-				if (substance[i-2] > 96 && substance[i-2] < 123) {
-					calcMM (substance, 2, i-3);
-				} else {
-					calcMM (substance, 1, i-2);
-						}
-				tempMM = M - tempMM;
-				
-				if (substance[i] > 47 && substance[i] < 58) {
-					switch (substance[i]) {
-						case '0':
-							M = M + 28*tempMM;
-							break;
-						case '1':
-							M = M + 29*tempMM;
-							break;
-						case '2':
-							M = M + 30*tempMM;
-							break;
-						case '3':
-							M = M + 31*tempMM;
-							break;
-						case '4':
-							M = M + 32*tempMM;
-							break;
-						case '5':
-							M = M + 33*tempMM;
-							break;
-						case '6':
-							M = M + 34*tempMM;
-							break;
-						case '7':
-							M = M + 35*tempMM;
-							break;
-						case '8':
-							M = M + 36*tempMM;
-							break;
-						case '9':
-							M = M + 37*tempMM;
-							break;
-						default:
-							return -1;
-							break;
-					}
-				} else 
-					M = M + tempMM;
-				break;
 			case '4':
-				if (substance[i-1] > 96 && substance[i-1] < 123) {
-					for (int repeat = 1; repeat < 4; repeat++)					
-						calcMM (substance, 2, i-2);
-				} else {
-					for (int repeat = 1; repeat < 4; repeat++)					
-						calcMM (substance, 1, i-1);
-				}
-				break;
-			case '5':
-				if (substance[i-1] > 96 && substance[i-1] < 123) {
-					for (int repeat = 1; repeat < 5; repeat++)					
-						calcMM (substance, 2, i-2);
-				} else {
-					for (int repeat = 1; repeat < 5; repeat++)					
-						calcMM (substance, 1, i-1);
-				}
-				break;
+			case '5': //cases for any subscript between 1 - 99 
 			case '6':
-				if (substance[i-1] > 96 && substance[i-1] < 123) {
-					for (int repeat = 1; repeat < 6; repeat++)					
-						calcMM (substance, 2, i-2);
-				} else {
-					for (int repeat = 1; repeat < 6; repeat++)					
-						calcMM (substance, 1, i-1);
-				}
-				break;
 			case '7':
-				if (substance[i-1] > 96 && substance[i-1] < 123) {
-					for (int repeat = 1; repeat < 7; repeat++)					
-						calcMM (substance, 2, i-2);
-				} else {
-					for (int repeat = 1; repeat < 7; repeat++)					
-						calcMM (substance, 1, i-1);
-				}
-				break;
 			case '8':
-				if (substance[i-1] > 96 && substance[i-1] < 123) {
-					for (int repeat = 1; repeat < 8; repeat++)					
-						calcMM (substance, 2, i-2);
-				} else {
-					for (int repeat = 1; repeat < 8; repeat++)					
-						calcMM (substance, 1, i-1);
-				}
-				break;
 			case '9':
+				tempMM = M;
 				if (substance[i-1] > 96 && substance[i-1] < 123) {
-					for (int repeat = 1; repeat < 9; repeat++)					
-						calcMM (substance, 2, i-2);
+					calcMM (substance, 2, i-2);
 				} else {
-					for (int repeat = 1; repeat < 9; repeat++)					
-						calcMM (substance, 1, i-1);
+					calcMM (substance, 1, i-1);
 				}
+				tempMM = M - tempMM;
+			
+				multiple = subscript (substance, i); //find subscript after element name
+				if (multiple < 1)
+					return -1;
+				M = M + (multiple-2)*tempMM;
+				//2 less than subscript because function has gone through masses twice already
 				break;
 			case '(':
 				bracketMM = M;
