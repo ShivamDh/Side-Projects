@@ -51,8 +51,8 @@ float calcMM (char* substance, int length, int start) {
 	
 	int i = start;
 	
-	float bracketMM = 0; float tempMM = 0;
-	for (i; i < length; i++) {
+	float bracketMM = 0; float tempMM = 0; int multiple;
+	for (i; i < start+length; i++) {
 		switch (substance[i]) {
 			case '1':
 			case '2':
@@ -82,7 +82,15 @@ float calcMM (char* substance, int length, int start) {
 				break;
 			case ')':
 				bracketMM = M - bracketMM;
-				//figure out how to multiple molar masses within the brackets only, find less tedious way
+				if (substance[i+1] > 48 && substance[i+1] < 58) {
+					i++;
+					multiple = subscript(substance, i); //find the subscript after brackets
+					if (multiple < 1)
+						return -1;
+					M = M + (multiple-1)*bracketMM; //1 less since function went through masses already
+					break;
+				} else
+					return -1;
 				break;
 			case 'A': 
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
