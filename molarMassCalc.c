@@ -96,11 +96,17 @@ float calcMM (char* substance, int length, int start) {
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
 					switch (substance[i]) {
+						case 'c':
+							M += 227; //actinium atom
+							break;
 						case 'g':
 							M += 107.868; //silver atom
 							break;
 						case 'l':
 							M += 26.9815; //aluminium atom
+							break;
+						case 'm':
+							M += 243; //americium atom
 							break;
 						case 'r':
 							M += 39.984; //argon atom
@@ -135,6 +141,9 @@ float calcMM (char* substance, int length, int start) {
 						case 'i':
 							M += 208.98; //bismuth atom
 							break;
+						case 'k':
+							M += 247; //berkelium atom
+							break;
 						case 'r':
 							M += 79.904; //bromine atom
 							break;
@@ -161,6 +170,9 @@ float calcMM (char* substance, int length, int start) {
 							break;
 						case 'l':
 							M += 35.453; //chlorine atom
+							break;
+						case 'g':
+							M += 247; //curium atom
 							break;
 						case 'o':
 							M += 58.933; //cobalt atom
@@ -221,6 +233,9 @@ float calcMM (char* substance, int length, int start) {
 					switch (substance[i]) {
 						case 'e':
 							M += 55.845; //iron atom
+							break;
+						case 'm':
+							M += 257; //fermium atom
 							break;
 						case 'r':
 							M += 223; //francium atom
@@ -368,11 +383,14 @@ float calcMM (char* substance, int length, int start) {
 						case 'd':
 							M += 144.24; //neodymium atom
 							break;
+						case 'e':
+							M += 20.18; //neon atom
+							break;
 						case 'i':
 							M += 58.693; // nickel atom
 							break;
-						case 'e':
-							M += 20.18; //neon atom
+						case 'p':
+							M += 237; //neptunium atom
 							break;
 						default:
 							return -1;
@@ -401,6 +419,9 @@ float calcMM (char* substance, int length, int start) {
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
 					switch (substance[i]) {
+						case 'a':
+							M += 231.036; //protactinium atom
+							break;
 						case 'b':
 							M += 207.2; //lead atom
 							break;
@@ -418,6 +439,9 @@ float calcMM (char* substance, int length, int start) {
 							break;
 						case 't':
 							M += 195.078; //platinum atom
+							break;
+						case 'u':
+							M += 244; //plutonium atom
 							break;
 						default:
 							return -1;
@@ -505,6 +529,9 @@ float calcMM (char* substance, int length, int start) {
 						case 'e':
 							M += 127.6; // tellurium atom
 							break;
+						case 'h':
+							M += 232.038; //thorium atom
+							break;
 						case 'i':
 							M += 47.867; // titanium atom
 							break;
@@ -522,7 +549,7 @@ float calcMM (char* substance, int length, int start) {
 					return -1;
 				}
 				break;
-			case 'U': M += 21;
+			case 'U': M += 238.029; //uranium atom
 			break;
 			case 'V': M += 50.942; // vanadium atom
 			break;
