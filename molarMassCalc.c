@@ -20,30 +20,31 @@ int main (int argc,char* argv[]) {
 			i++; //i = number of characters, last compound[i] stores '\n'
 			compound1[i] = getchar(); //update for next while loop
 		}
-		printf ("%d", i);
 		
 		float theMM = calcMM(compound1, i, 0);
 		if (theMM < 0)
 			printf ("An error has occurred, please check the characters used for the formulae");
 		else 
 			printf ("\nThe molar mass is: %.3f", theMM);
-	} else if (argc ==2) {
-		int j = 0;
-		while (argv[1][j] != '\0' && argv[1][j] != '\n' && j < 25) { //store variables until input ends
-			if (!(argv[1][j] == 40 || argv[1][j] == 41 || (argv[1][j] > 47 && argv[1][j] < 58) || 
-			(argv[1][j] > 64 && argv[1][j] < 91) || (argv[1][j] > 96 && argv[1][j] < 123))) {
-				printf ("Incorrect characters used to represent a compound"); //checked for invalid characters
-				return -1;
+	} else if (argc > 1) {
+		for (int loops = 1; loops < argc; loops++) {
+			int j = 0;
+			while (argv[loops][j] != '\0' && argv[loops][j] != '\n' && j < 25) { //store variables until input ends
+				if (!(argv[loops][j] == 40 || argv[loops][j] == 41 || (argv[loops][j] > 47 && argv[loops][j] < 58) || 
+				(argv[loops][j] > 64 && argv[loops][j] < 91) || (argv[loops][j] > 96 && argv[loops][j] < 123))) {
+					printf ("Incorrect characters used to represent a compound"); //checked for invalid characters
+					return -1;
+				}
+				j++; //j = number of characters, last compound[j] stores '\n'
 			}
-			j++; //j = number of characters, last compound[j] stores '\n'
+			
+			float theMM = calcMM(argv[loops], j, 0);
+			if (theMM < 0)
+				printf ("An error has occurred, please check the characters used for the formulae");
+			else 
+				printf ("\nThe molar mass is: %.3f", theMM);
+			M = 0;
 		}
-		printf ("%d", j);
-		
-		float theMM = calcMM(argv[1], j, 0);
-		if (theMM < 0)
-			printf ("An error has occurred, please check the characters used for the formulae");
-		else 
-			printf ("\nThe molar mass is: %.3f", theMM);
 	}
 	
 	return 0;
