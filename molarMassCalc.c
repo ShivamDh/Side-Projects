@@ -7,7 +7,7 @@ int subscript (char* substance, int position);
 
 int main (int argc,char* argv[]) {
 	if(argc == 1) { //no command line argumnet for compound
-		char compound1[25]; //reasonable to assume no compound over 25 letters will be used
+		char compound1[50]; //reasonable to assume no compound over 25 letters will be used
 		printf ("Please enter a compound who's molar mass you would like to calculate: ");
 		int i = 0;
 		compound1[i] = getchar();
@@ -23,6 +23,23 @@ int main (int argc,char* argv[]) {
 		printf ("%d", i);
 		
 		float theMM = calcMM(compound1, i, 0);
+		if (theMM < 0)
+			printf ("An error has occurred, please check the characters used for the formulae");
+		else 
+			printf ("\nThe molar mass is: %.3f", theMM);
+	} else if (argc ==2) {
+		int j = 0;
+		while (argv[1][j] != '\0' && argv[1][j] != '\n' && j < 25) { //store variables until input ends
+			if (!(argv[1][j] == 40 || argv[1][j] == 41 || (argv[1][j] > 47 && argv[1][j] < 58) || 
+			(argv[1][j] > 64 && argv[1][j] < 91) || (argv[1][j] > 96 && argv[1][j] < 123))) {
+				printf ("Incorrect characters used to represent a compound"); //checked for invalid characters
+				return -1;
+			}
+			j++; //j = number of characters, last compound[j] stores '\n'
+		}
+		printf ("%d", j);
+		
+		float theMM = calcMM(argv[1], j, 0);
 		if (theMM < 0)
 			printf ("An error has occurred, please check the characters used for the formulae");
 		else 
