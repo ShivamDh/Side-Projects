@@ -1,33 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//global variable for molar mass, utilized a lot, better off global than passed as parameter
 float M = 0;
 float calcMM (char* substance, int length, int start);
 int subscript (char* substance, int position);
 
 int main (int argc,char* argv[]) {
-	if(argc == 1) { //no command line argumnet for compound
+	if(argc == 1) { //no command line argument for compound
 		char compound1[50]; //reasonable to assume no compound over 25 letters will be used
 		printf ("Please enter a compound who's molar mass you would like to calculate: ");
 		int i = 0;
-		compound1[i] = getchar();
-		while (compound1[i] != '\0' && compound1[i] != '\n' && i < 25) { //store variables until input ends
+		compound1[i] = getchar(); //analyze input char by char
+		while (compound1[i] != '\0' && compound1[i] != '\n' && i < 25) { //store into char array until input ends
 			if (!(compound1[i] == 40 || compound1[i] == 41 || (compound1[i] > 47 && compound1[i] < 58) || 
 			(compound1[i] > 64 && compound1[i] < 91) || (compound1[i] > 96 && compound1[i] < 123))) {
 				printf ("Incorrect characters used to represent a compound"); //checked for invalid characters
 				return -1;
 			}
 			i++; //i = number of characters, last compound[i] stores '\n'
-			compound1[i] = getchar(); //update for next while loop
+			compound1[i] = getchar(); //update for next loop
 		}
 		
-		float theMM = calcMM(compound1, i, 0);
-		if (theMM < 0)
+		float theMM = calcMM(compound1, i, 0); //calculate the molar mass
+		if (theMM < 0) //error check
 			printf ("An error has occurred, please check the characters used for the formulae");
 		else 
 			printf ("\nThe molar mass is: %.3f", theMM);
-	} else if (argc > 1) {
-		for (int loops = 1; loops < argc; loops++) {
+	} else if (argc > 1) { //with command line argument
+		for (int loops = 1; loops < argc; loops++) { //run for cmd line arguments - 1
 			int j = 0;
 			while (argv[loops][j] != '\0' && argv[loops][j] != '\n' && j < 25) { //store variables until input ends
 				if (!(argv[loops][j] == 40 || argv[loops][j] == 41 || (argv[loops][j] > 47 && argv[loops][j] < 58) || 
@@ -38,12 +39,12 @@ int main (int argc,char* argv[]) {
 				j++; //j = number of characters, last compound[j] stores '\n'
 			}
 			
-			float theMM = calcMM(argv[loops], j, 0);
-			if (theMM < 0)
+			float theMM = calcMM(argv[loops], j, 0); //calc molar mass
+			if (theMM < 0) //error check
 				printf ("An error has occurred, please check the characters used for the formulae");
 			else 
 				printf ("\nThe molar mass is: %.3f", theMM);
-			M = 0;
+			M = 0; //reset molar mass to 0 for next compound to be calculated
 		}
 	}
 	
@@ -52,10 +53,10 @@ int main (int argc,char* argv[]) {
 
 int subscript (char* substance, int position) { //new function used to find numeric subscripts
 	int number1 = substance[position];
-	if (number1 < 48 || number1 > 57)
+	if (number1 < 48 || number1 > 57) //double check that subscript after compound name is a valid number
 		return -1;
 	number1 -= 48;
-	if (substance[position+1] > 47 && substance[position+1] < 58) {
+	if (substance[position+1] > 47 && substance[position+1] < 58) { //calc the subscript on compound
 		int number2 = substance[position+1];
 		number2 -= 48;
 		number1 *= 10;
@@ -67,39 +68,38 @@ int subscript (char* substance, int position) { //new function used to find nume
 
 float calcMM (char* substance, int length, int start) {
 	
-	int i = start;
-	
-	float bracketMM = 0; float tempMM = 0; int multiple;
+	int i = start; int multiple;
+	float bracketMM = 0; float tempMM = 0;
 	for (i; i < start+length; i++) {
-		switch (substance[i]) {
+		switch (substance[i]) { //The switch cased used to determined molarmass by finding elements and subscripts
 			case '1':
 			case '2':
 			case '3':
 			case '4':
-			case '5': //cases for any subscript between 1 - 99 
+			case '5':   //cases for any subscript between 1 - 99 
 			case '6':
 			case '7':
 			case '8':
 			case '9':
-				tempMM = M;
+				tempMM = M; //record molar mass
 				if (substance[i-1] > 96 && substance[i-1] < 123) {
-					calcMM (substance, 2, i-2);
+					calcMM (substance, 2, i-2); //repeat calc for past 2 char if lowercase letter before subscript
 				} else {
-					calcMM (substance, 1, i-1);
+					calcMM (substance, 1, i-1); //repeat calc for past char if uppercase letter before subscript
 				}
-				tempMM = M - tempMM;
+				tempMM = M - tempMM; //find molar mass of element/compound that the subscript applies to
 			
-				multiple = subscript (substance, i); //find subscript after element name
+				multiple = subscript (substance, i); //find subscript (number) after element name
 				if (multiple < 1)
 					return -1;
-				M = M + (multiple-2)*tempMM;
+				M = M + (multiple-2)*tempMM; //apply the necessary additions to the molar mass according to subscript
 				//2 less than subscript because function has gone through masses twice already
 				break;
 			case '(':
-				bracketMM = M;
+				bracketMM = M; //temp variable, molar mass of compound before brackets
 				break;
 			case ')':
-				bracketMM = M - bracketMM;
+				bracketMM = M - bracketMM; //find molar mass of compound inside brackets
 				if (substance[i+1] > 48 && substance[i+1] < 58) {
 					i++;
 					multiple = subscript(substance, i); //find the subscript after brackets
@@ -110,6 +110,8 @@ float calcMM (char* substance, int length, int start) {
 				} else
 					return -1;
 				break;
+				
+			//Switch cases below are for all the compounds in the periodic table (for the first 118 elements)
 			case 'A': 
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
@@ -143,7 +145,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //if only 'A' was entered, invalid element
 				}
 				break;
 			case 'B': 
@@ -239,7 +241,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //error check if only 'D' was entered, invalid element
 				}
 				break;
 			case 'E': 
@@ -260,7 +262,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //if only 'E' was entered, invalid element
 				}
 				break;
 			case 'F': 
@@ -305,7 +307,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //if only 'G' was entered, invalid element
 				}
 				break;
 			case 'H':
@@ -353,8 +355,9 @@ float calcMM (char* substance, int length, int start) {
 				} else {
 					M += 126.905; //iodine atom
 				}
-			case 'J': M += 10;
-			break;
+			case 'J': 
+				return -1; //no element with a letter 'J' to start its name
+				break;
 			case 'K':
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
@@ -394,7 +397,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //error check for if 'L' was entered, invalid element
 				}
 				break;
 			case 'M':
@@ -424,7 +427,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //if only 'M' was entered, invalid element
 				}
 				break;
 			case 'N': 
@@ -517,8 +520,9 @@ float calcMM (char* substance, int length, int start) {
 					M += 30.9738; // phosphorus atom
 				}
 				break;
-			case 'Q': M += 17;
-			break;
+			case 'Q': 
+				return -1; //no element with name starting with 'Q'
+				break;
 			case 'R': 
 				if (substance[i+1] > 96 && substance[i+1] < 123) {
 					i++;
@@ -552,7 +556,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //error check if only 'R' was entered, invalid element
 				}
 				break;
 			case 'S': 
@@ -627,7 +631,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //error check if only 'T' was entered, invalid element
 				}
 				break;
 			case 'U': M += 238.029; //uranium atom
@@ -648,7 +652,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //if only 'X' was entered, invalid element
 				}
 				break;
 			case 'Y': 
@@ -681,7 +685,7 @@ float calcMM (char* substance, int length, int start) {
 							break;
 					}
 				} else {
-					return -1;
+					return -1; //error check if only 'Z' was entered, invalid element
 				}
 				break;
 			default: 
@@ -690,5 +694,5 @@ float calcMM (char* substance, int length, int start) {
 		}
 	}
 	
-	return M;
+	return M; //the determined molar mass of the compound inputted into function
 }
