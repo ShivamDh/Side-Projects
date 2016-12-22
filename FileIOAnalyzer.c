@@ -88,5 +88,74 @@ int main (int argc, char** argv) { //meant to take in the input file through com
 }
 
 void wordCount (char* fileIn, char* fileOut, int argNum, char** argStr) {
+	FILE* inFile;
+	inFile = fopen(fileIn, "r");
 	
+	if (inFile == NULL) { //error check to ensure file opened properly
+		printf ("Input file could not be opened");
+		return;
+	}
+	
+	FILE* outFile;
+	outFile = fopen(fileOut, "w");
+
+	int charCount = 0; 
+	char c = fgetc(inFile); // take in one char at a time
+	while (c != EOF) { // continue until end of file reached
+		if ( c == '\n' || c < 65 ||(c > 90 && c < 97) || c > 127) {
+			c = fgetc(inFile);
+			continue; //if not a valid character take in character and move onto next iteration
+		}
+		charCount++; //count up the number of valid characters
+		c = fgetc(inFile); //get the next character for the next iteration
+	}
+	fprintf (outFile, "Number of valid (alphabet) characters: %d\n", charCount);
+	
+	clearerr(inFile);
+	fseek(inFile, 0, SEEK_SET);
+	
+	char word[50]; //assuming no word in the file in more than 50 characters long
+	int counter = 0;
+	while ((fscanf(inFile, "%49s", &word)) == 1) // take in word by word
+		counter++; // counter for words
+
+	fprintf (outFile, "Number of words: %d\n", counter);
+	clearerr(inFile);
+	fseek(inFile, 0, SEEK_SET);
+	
+	int longest_word = -1000;
+	int shortest_word = 1000;
+	int wordc = 0;
+	char validCharCount = 0;
+	char d = fgetc(inFile);
+	while (d != EOF) {
+		if (d == '\n' || d < 65 ||(d > 90 && d < 97) || d > 127) {
+			if (wordc > longest_word)
+				longest_word = wordc; //check if the longest word found
+			if (wordc < shortest_word) {
+				if (wordc != 0) 
+					shortest_word = wordc; // check if the shortest word found
+			}
+			d = fgetc(inFile); // move onto next character
+			wordc=0; //reset character count for each word
+			continue; //onto next iteration
+		}
+		validCharCount++; //move up characters
+		wordc++; //successful iteration, length of current word increased
+		
+		d = fgetc(inFile); //attain next character
+	}
+	fprintf (outFile, "Longest Word Length: %d\n", longest_word);
+	fprintf (outFile, "Shortest Word Length: %d\n", shortest_word);
+	
+	float avg = (float)validCharCount/(float)counter;
+	avg = floor(avg*100+0.5)/100; //find rounded number for the average character length of a word
+	fprintf (outFile, "Average Word Length: %f\n", avg);
+
+	
+	clearerr(inFile);
+	fseek(inFile, 0, SEEK_SET);
+	
+	fclose(inFile);
+	fclose(outFile);
 }
