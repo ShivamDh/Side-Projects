@@ -14,8 +14,6 @@ int main (int argc, char** argv) { //meant to take in the input file through com
 	while (argv[1][count] != '\0') //this will  find the length of input file
 		count++;
 	
-	printf ("%s   %d", argv[1], count);
-	
 	char in2[count+1];
 	int g = 0;
 	for (g; g < count; g++) {
@@ -28,8 +26,6 @@ int main (int argc, char** argv) { //meant to take in the input file through com
 		count2++; //used to check if file extension has been added, usually with a dot
 	
 	bool endingcheck = false;
-	
-	printf ("%s", in2);
 	
 	if (count2 == count) { //if total length of file equalled length till a dot was reached, meant no file extension seen
 		char in1[count+4]; //new array where file extension will be added to input file
