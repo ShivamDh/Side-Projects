@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 struct Players {
 	char name[50]; //first and/or last name of person
@@ -15,7 +16,7 @@ struct Players {
 	float faceoff_percent; 
 };
 
-int readFile (Players* allPlayers, const char* tfile);
+int readFile (struct Players* allPlayers, const char* tfile);
 
 int main () {
 	printf ("Welcome to Hockey Manager,\nThis program that can be used to filter and sort statistics provided by you.\
@@ -35,7 +36,7 @@ int main () {
 		return -1;
 	}
 	
-	Players* People;
+	struct Players* People;
 	int people_number = 0; //the number of players that are present in the text file to be analyzed
 	
 	people_number = readFile (People, inputFile);
@@ -46,11 +47,11 @@ int main () {
 	} else if (people_number == 0) {
 		printf ("No data was found in the text file");
 	}
-	
+
 	
 }
 
-int readFile (Players* allPlayers, const char* tfile) {
+int readFile (struct Players* allPlayers, const char* tfile) {
 	int numPpl = 0;
 	FILE* FileIN;
 	
@@ -73,10 +74,54 @@ int readFile (Players* allPlayers, const char* tfile) {
 		numPpl++; //count up the number of players to have their statistics inputted
 	}
 	
-	clearerr(inFile);
-	fseek(inFile, 0, SEEK_SET);
+	clearerr(FileIN);
+	fseek(FileIN, 0, SEEK_SET);
 	
-	allPlayers = (Players*) malloc (numPpl*sizeof(Players)); //create appropriate number of structs
+	allPlayers = (struct Players*) malloc (numPpl*sizeof(struct Players)); //create appropriate number of structs
+	
+	int i = 0;
+	for ( ; i < numPpl; i++) {
+		fscanf(FileIN, "%49s", allPlayers[i].name);
+		
+		int num_signed_int = 0;
+		int temp[9] = {0};
+		
+		for (int structElements = 0; structElements < 9; structElements++) {	
+			
+			if (fscanf (FileIN, "%d", &temp[structElements]) == 0) 
+				continue;
+			
+			if ((structElements < 4 || structElements > 4) && structElements < 8) {
+				if (temp[structElements] < 0 && temp[structElements] > 65535) {
+					printf ("Invalid numbers present in the data provided for player %d, statistics %d", i, structElements);
+					return -1;
+				}
+			}
+				
+		}
+		
+		printf ("%d %d %d %d %d %d %d %d %d", temp[0], temp[1], temp[2], temp[3], temp[4], temp[5], temp[6], temp[7], temp[8]);
+		
+		allPlayers[i].GP = temp[0];
+		allPlayers[i].goals = temp[1];
+		allPlayers[i].assists = temp[2];
+		allPlayers[i].points = temp[3];
+		allPlayers[i].plus_minus = temp[4];
+		allPlayers[i].shots = temp[5];
+		allPlayers[i].PIM = temp[6];
+		allPlayers[i].hits = temp[7];
+		allPlayers[i].blocked_shots = temp[8];
+		
+			
+		char temp2[500];
+		if (i != 2 && fgets(temp2, 499, FileIN) == NULL) {; //flush out any short remaining text
+			printf ("\nError, more content on a line that needed, check line spaces   %d\n", i);
+			return -1;
+		}
+	}
+	
+	for (int c = 0; c < numPpl; c++)
+		printf ("\nName:%s GP:%d Goals:%d Assists: %d Points: %d\n", allPlayers[c].name, allPlayers[c].GP, allPlayers[c].goals, allPlayers[c].assists, allPlayers[c].points);
 	
 	fclose(FileIN); //close the files
 	fclose(csvFile);
