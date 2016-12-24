@@ -147,11 +147,7 @@ void wordCount (char* fileIn, char* fileOut, int argNum, char** argStr) {
 	float avg = (float)validCharCount/(float)counter;
 	avg = floor(avg*100+0.5)/100; //find rounded number for the average character length of a word
 	fprintf (outFile, "Average Word Length: %f\n", avg);
-
 	
-	clearerr(inFile);
-	fseek(inFile, 0, SEEK_SET);
-	
-	fclose(inFile);
+	fclose(inFile); //close the files
 	fclose(outFile);
 }
