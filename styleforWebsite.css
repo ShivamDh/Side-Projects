@@ -1,0 +1,99 @@
+/* body{ */
+	/* color:red; */
+/* } */
+
+html {
+	background:linear-gradient(135deg, #FA2B2B, #170101) no-repeat;
+}
+
+#Header {
+	margin-top: -20px;
+	width:100%;
+	height:100px;
+	background-image:url('http://rockstartemplate.com/blogheaders/bannerdesign2.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#Head {
+	text-align:center;
+	line-height: 100px;
+	font-family: Arial, Times New Roman, Calibri;
+	font-size:25px;
+	color:yellow;
+}
+
+#type1 {
+	font-size: 16px;
+	color: white;
+}
+
+#Table1, #TH1, .Data {
+	border: 0.1px solid grey;
+}
+
+#Table1 {
+	width: 600px;
+	border-collapse: collapse;
+}
+
+#TH1 {
+	padding: 15px;
+	color:white;
+	text-align: center;
+	background-color: green;
+}
+
+.Data {
+	padding: 9px;
+	text-align: center;
+}
+
+tr:nth-child(odd) {
+	background-color: #3EF9E5;
+}
+
+tr:nth-child(even) {
+	background-color: #993EF9;
+}
+
+.Color1 {
+	background-color:red;
+	color: yellow;
+}
+
+.Color2 {
+	background-color:black;
+	color: white;
+}
+
+.Color3 {
+	background-color:#000066;
+	color: #ff9900;
+}
+
+.DiagonalC1a {
+	background-color: #00b3b3;
+}
+
+.DiagonalC1b {
+	background-color: #e6005c;
+}
+
+.DiagonalC1c {
+	background-color: #013201;
+	color:white;
+}
+
+.DiagonalC2a {
+	background-color: #ffccb3;
+}
+
+.DiagonalC2b {
+	background-color: #ada4db;
+}
+
+.DiagonalC2c {
+	background-color: #401f09;
+	color:white;
+}
