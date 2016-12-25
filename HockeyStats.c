@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct Players {
 	//inputted basic statistics
@@ -16,14 +17,15 @@ typedef struct Players {
 	unsigned short int hits; 
 	unsigned short int blocked_shots; 
 	float faceoff_percent; 
+	char ATOI[6]; //average time on ice
 	//calculated advanced metrics
 	float shot_percent;
 	
 } thePlayers, *PlayerStats;
 
 int readFile (const char* tfile);
-bool calcStats (int PlayerNumber);
-bool exportData (int Players);
+int calcStats (int PlayerNumber);
+// int exportData (int Players);
 
 PlayerStats allPlayers;
 int main () {
@@ -57,11 +59,6 @@ int main () {
 	
 	if (!(calcStats (people_number))) {
 		printf ("\nAn error occurred during advanced metrics calculations");
-		return -1;
-	}
-	
-	if (!(exportData(people_number))) {
-		printf ("An error occurred during exporting data");
 		return -1;
 	}
 	
@@ -144,6 +141,42 @@ int readFile (const char* tfile) {
 			printf ("Invalid Faceoff Percentage statistic entered, must be a positive value\n");
 		}
 		
+		char t;
+		t = getc(FileIN);
+		while (!isalnum(t) && t!=EOF)
+			t = getc(FileIN);
+		
+		if (!isalpha(t)) {
+			int x = 0;
+			while (t != ' ' && t != '\n' && t != EOF && x < 5) {
+				allPlayers[i].ATOI[x] = t;
+				x++;
+				t = getc (FileIN);
+				if (x == 2) { //check for valid minutes number in ATOI
+					int check_mins = atoi (allPlayers[i].ATOI);
+					if (check_mins < 0 || check_mins > 60) {
+						printf ("Invalid ATOI minutes for player %d\n", i+1);
+						return -1;
+					}
+				}
+				if (x == 5) { //check for valid seconds number in ATOI
+					char secs [2];
+					memcpy(secs, &allPlayers[i].ATOI[3], 2);
+					int check_secs = atoi (secs);
+					if (check_secs < 0 || check_secs > 60) {
+						printf ("Invalid ATOI minutes for player %d\n", i+1);
+						return -1;
+					}
+				}
+			}
+			if (x == 2) {
+				allPlayers[i].ATOI[2] = ':';
+				allPlayers[i].ATOI[3] = '0';
+				allPlayers[i].ATOI[4] = '0';
+			}
+			allPlayers[i].ATOI[5] = '\0';
+		}
+			
 		allPlayers[i].GP = temp[0]; //transfer over data from temp integer array to struct data
 		allPlayers[i].goals = temp[1];
 		allPlayers[i].assists = temp[2];
@@ -165,8 +198,8 @@ int readFile (const char* tfile) {
 	return numPpl; //return the value of the number of people;
 } 
 
-bool calcStats (int PlayerNumber) {
+int calcStats (int PlayerNumber) {
 	int y= 1+1;
 	
-	return true;
+	return 1;
 }
