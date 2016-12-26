@@ -226,11 +226,18 @@ int calcStats (int PlayerNumber) {
 				memcpy (temp_ATOI2, allPlayers[num].ATOI, 2);
 				int temporary_ATOI2 = atoi(temp_ATOI2);
 				TOI_mins += temporary_ATOI2;
+				loc++;
 			} else 
 				break;
 		}
+		loc++;
+		char secs_ATOI[2];
+		secs_ATOI[0] = allPlayers[num].ATOI[loc];
+		loc++;
+		secs_ATOI[1] = allPlayers[num].ATOI[loc];
+		int ATOI_secs = atoi(secs_ATOI);
+		float fATOI = TOI_mins + (float)(ATOI_secs/60.0);
 		
 	}
-	
 	return 1;
 }
