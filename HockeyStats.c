@@ -12,7 +12,7 @@ typedef struct Players {
 	unsigned short int assists;
 	unsigned short int points;
 	short int plus_minus;
-	unsigned short int shots;
+	unsigned short int shots; //on goal
 	unsigned short int PIM; //penalty minutes
 	unsigned short int hits; 
 	unsigned short int blocked_shots; 
@@ -20,7 +20,15 @@ typedef struct Players {
 	char ATOI[6]; //average time on ice
 	//calculated advanced metrics
 	float shot_percent;
-	
+	float goals_per_60;
+	float assists_per_60;
+	float points_per_60;
+	float shots_per_60;
+	float plus_minus_per_60;
+	float PIM_per_game;
+	float goal_percentage; //goals account for how much of the total points
+	float assist_percentage; //assists account for how much of the total points
+	float defensiveness; //a combination of hits and blocked shots combined with ATOI
 } thePlayers, *PlayerStats;
 
 int readFile (const char* tfile);
@@ -169,6 +177,9 @@ int readFile (const char* tfile) {
 					}
 				}
 			}
+			if (x == 0) {
+				memcpy(allPlayers[i].ATOI, "00:00", 5);
+			}
 			if (x == 2) {
 				allPlayers[i].ATOI[2] = ':';
 				allPlayers[i].ATOI[3] = '0';
@@ -199,7 +210,27 @@ int readFile (const char* tfile) {
 } 
 
 int calcStats (int PlayerNumber) {
-	int y= 1+1;
+	
+	for (int num = 0; num < PlayerNumber; num++) {
+		float TOI_mins = 0; //calculating the ATOI stat as a float
+		int loc = 0;
+		if (allPlayers[num].ATOI[loc] > '0' && allPlayers[num].ATOI[loc] < '6') {
+			loc++;
+			if (allPlayers[num].ATOI[loc] == ':') { //single minute ATOI
+				char temp_ATOI[1];
+				temp_ATOI[0] = allPlayers[num].ATOI[loc-1];
+				int temporary_ATOI = atoi(temp_ATOI);
+				TOI_mins += (float)temporary_ATOI;
+			} else if (allPlayers[num].ATOI[loc] > '0' && allPlayers[num].ATOI[loc] <= '9') { //double digit minute ATOI
+				char temp_ATOI2 [2];
+				memcpy (temp_ATOI2, allPlayers[num].ATOI, 2);
+				int temporary_ATOI2 = atoi(temp_ATOI2);
+				TOI_mins += temporary_ATOI2;
+			} else 
+				break;
+		}
+		
+	}
 	
 	return 1;
 }
