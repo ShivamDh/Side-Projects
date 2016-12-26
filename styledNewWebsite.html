@@ -3,7 +3,10 @@
 <head>
 <title> A New Styled Website! </title>
 <link type="text/css" rel="stylesheet" href="styleforWebsite.css">
-<script src="styledNewWebsite.js"> </script>
+<!-- jQuery lib -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!-- jQuery file -->
+<script src="styledNewWebsitejQ.js"> </script>
 
 </head>
 
@@ -13,32 +16,46 @@
 
 <p ID="type1">This is just a website I played around with when combining my CSS knowledge and JavaScript to previous HTML knowledge.</p>
 <br/>
+<!-- An Image Slider created to showcase pictures -->
+<h2 id="ImageTitle"> <center>The Biggest Soccer Games in the World </center><h2>
+<div class="ImgSlider">
+	<!-- Links  -->
+	<a href="#" class="Next">>></a>
+	<a href="#" class="Prev"><<</a>
+	<!-- The actual frames within the picture slider that will be displayed -->
+	<ul class="Frames">
+		<li class="Slides"> <img width="600" height="300" src ="https://s-media-cache-ak0.pinimg.com/736x/d3/9b/03/d39b0341041b202f2ff81f32b8a4362b.jpg"/> </li>
+		<li class="Slides"> <img width="600" height="300" src ="http://www.essentiallysports.com/wp-content/uploads/2016/07/EURO_2016.jpg"/> </li>
+		<li class="Slides"> <img width="600" height="300" src ="http://www.concacaf.com/wp-content/uploads/2015/10/16_CAC_GEN_GGL.jpg"/> </li>
+		<li class="Slides"> <img width="600" height="300" src ="https://pbs.twimg.com/media/CgAh_DdXEAA3KhD.jpg:large"/> </li>
+		<li class="Slides"> <img width="600" height="300" src ="https://i.ytimg.com/vi/Bj583FnQN2w/maxresdefault.jpg"/> </li>
+		<li class="Slides"> <img width="600" height="300" src ="http://www.pub.lv/web/wp-content/uploads/2016/05/EL-Final-2016.jpg"/> </li>
+	</ul>
+</div>
+<br/>
+<!-- A 3x3 Table that uses jQuery and CSS to display different color schemes -->
 <table id="Table1">
-	<th colspan="20px" id ="TH1">A Fancy Table </th>
+	<th colspan="20px" id ="TH1">A Fancy Table (hover for color schemes)</th>
 	<tr>
-		<td class="Data" id="Option1"> First </td>
-		<td class="Data" id="Option2"> Second</td>
-		<td class="Data" id="Option3"> Third</td>
+		<td class="Data" id="Option1"> Choice 1 </td>
+		<td class="Data" id="Option2"> Choice 2</td>
+		<td class="Data" id="Option3"> Choice 3</td>
 	</tr>
 	<tr>
-		<td class="Data" id="Option4"> Fourth </td>
-		<td class="Data" id="Option5"> Fifth </td>
-		<td class="Data" id="Option6"> Sixth </td>
+		<td class="Data" id="Option4"> Choice 4</td>
+		<td class="Data" id="Option5"> Choice 5</td>
+		<td class="Data" id="Option6"> Choice 6</td>
 	</tr>
 	<tr>
-		<td class="Data" id="Option7"> Seventh </td>
-		<td class="Data" id="Option8"> Eigth </td>
-		<td class="Data" id="Option9"> Ninth </td>
+		<td class="Data" id="Option7"> Choice 7 </td>
+		<td class="Data" id="Option8"> Choice 8</td>
+		<td class="Data" id="Option9"> Choice 9</td>
 	</tr>
 
 </table>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+
+<br/><br/>
+
 <br/>
 <br/>
 <br/>
