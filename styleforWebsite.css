@@ -19,6 +19,20 @@ html {
 	color:yellow;
 }
 
+#Reset {
+	position: absolute;
+	margin-top: 85px;
+	margin-left: -75px;
+}
+
+#Info {
+	height: 40px;
+	width: 500px;
+	position: relative;
+	margin-left: 100px;
+	margin-top: -75px;
+}
+
 #type1 {
 	font-size: 16px;
 	color: white;
