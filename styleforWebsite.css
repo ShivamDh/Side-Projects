@@ -1,7 +1,3 @@
-/* body{ */
-	/* color:red; */
-/* } */
-
 html {
 	background:linear-gradient(135deg, #FA2B2B, #170101) no-repeat;
 }
@@ -96,4 +92,63 @@ tr:nth-child(even) {
 .DiagonalC2c {
 	background-color: #401f09;
 	color:white;
+}
+
+.ImgSlider {
+	position:relative;
+	overflow: hidden;
+	margin: 20px auto 0 auto;
+	border-radius: 4px;
+}
+
+.Frames {
+	list-style: none;
+	position: relative;
+	padding: 0;
+	margin:0;
+	height: 200px;
+}
+
+.Slides {
+	position: relative;
+	width: 600px;
+	height: 300px;
+	display: block;
+	float: left;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	background: #ccc;
+	line-height: 300px;
+}
+
+.Next, .Prev {
+	position: absolute;
+	top: 35%;
+	z-index: 10;
+	display: block;
+	padding: 3% 3%;
+	width: auto;
+	height: auto;
+	background: grey;
+	font-size: 20px;
+	font-weight: 600;
+	opacity: 0.75;
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.Prev{
+  border-radius: 0 2px 2px 0;
+}
+
+.Next{
+  right: 0;
+  border-radius: 2px 0 0 2px;
+}
+
+#ImageTitle {
+	font-family: Quicksand, Open Sans, Arial, Times New Roman;
+	color: #00e68a;
 }
