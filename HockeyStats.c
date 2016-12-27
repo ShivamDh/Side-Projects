@@ -343,6 +343,7 @@ int exportData (int Players) {
 	}
 	
 	fclose(csvFile);
+	free(allPlayers);
 	
 	return 0;
 }
