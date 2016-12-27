@@ -184,4 +184,36 @@ $(document).ready(function() {
         Right();
     });
 	
+	
+	// creating a small circular progress loader
+	var ctx = document.getElementById('circle').getContext('2d');
+	var loaded = 0;
+	var starting = 4.72;
+	var can_w = ctx.canvas.width;
+	var can_h = ctx.canvas.height;
+	var difference;
+	function progressSim () {
+		difference = ((loaded/100)* Math.PI*2*10).toFixed(2);
+		ctx.clearRect(0,0,can_w,can_h);
+		ctx.lineWidth = 10;
+		ctx.textAlign = 'center';
+		ctx.strokeStyle= "black";
+		ctx.fillStyle = "black";
+		ctx.fillText(loaded+'%', can_w*.5, can_h*.5+2, can_w);
+		ctx.beginPath();
+		ctx.arc(35, 35, 30, starting, difference/10+starting, false);
+		ctx.stroke();
+		if (loaded >= 100){
+			clearTimeout(simulate);
+		}
+		loaded++;
+	}
+	
+	var simulate = setInterval(progressSim, 25);
+	
+	$('#Reset').click(function() {
+		loaded = 0;
+		simulate = setInterval(progressSim, 25);
+	});
+	
 });
