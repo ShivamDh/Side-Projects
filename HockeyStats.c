@@ -33,17 +33,17 @@ typedef struct Players {
 
 int readFile (const char* tfile);
 int calcStats (int PlayerNumber);
-// int exportData (int Players);
+int exportData (int Players);
 
-PlayerStats allPlayers;
+PlayerStats allPlayers; //gloabl scope struct array pointer
 int main () {
 	printf ("Welcome to Hockey Manager,\nThis program that can be used to filter and sort statistics provided by you.\
-	\nYour text file will be read and presented back in a comma splicted file (.csv) for you to analyze\n");
+	\nYour text file will be read and presented back in a comma separated value file (.csv) for you to analyze\n");
 	
 	printf ("\nEnter the file name (with .txt extension) you wish to open,\
 	\nEnsure it is in the same folder as this program: ");
 	char inputFile [50];
-	scanf ("%s", inputFile);
+	scanf ("%s", inputFile); //attain input file name
 	
 	int count1 = 0;
 	while (inputFile[count1] != '.') //this will find the length of input file
@@ -65,12 +65,19 @@ int main () {
 		printf ("No data was found in the text file");
 	}
 	
-	if (!(calcStats (people_number))) {
+	if ((calcStats (people_number) != 0)) { //error checking from calcStats function
 		printf ("\nAn error occurred during advanced metrics calculations");
 		return -1;
 	}
 	
-	printf ("Test: Program finished running");
+	if ((exportData(people_number) != 0)) {
+		printf ("\nAn error occurred during advanced metrics calculations");
+		return -1;
+	}
+	
+	printf ("\n\nFile has been read successfully! Open up HockeyStats.csv to see your new .csv file\n");
+	
+	return 0;
 	
 }
 
@@ -111,12 +118,6 @@ int readFile (const char* tfile) {
 			while (temporary[ch] != '\0')
 				ch++;
 			
-			// int ch = atoi (temporary); //convert number to integer
-			// int digits = 0;
-			// while (ch != 0) { //find the number of digits in the number
-				// ch = ch/10;
-				// digits++;
-			// }
 			fseek (FileIN, -ch, SEEK_CUR); //move back specific number of places according the number of digits
 		} else {
 			strcat(allPlayers[i].name, " "); //if 2nd word was indeed a character, player has a 2 word name
@@ -125,12 +126,12 @@ int readFile (const char* tfile) {
 		
 		char t;
 		t = getc(FileIN);
-		while (!isalnum(t) && t!=EOF)
+		while (!isalnum(t) && t!=EOF) //move forward until alphanumeric character seen
 			t = getc(FileIN);
 		
 		if (!isalpha(t)) {
 			int x = 0;
-			int checker = 1000;
+			int checker = 1000; //random large number added, will be used to count up char from mins to secs stat
 			while (t != ' ' && t != '\n' && t != EOF && x < 5) {
 				allPlayers[i].ATOI[x] = t;
 				x++;
@@ -154,24 +155,26 @@ int readFile (const char* tfile) {
 					}
 				}
 			}
-			if (x == 0) {
+			if (x == 0) { //if no ATOI stat found
 				memcpy(allPlayers[i].ATOI, "00:00", 5);
 			}
-			if (x == 2) {
+			if (x == 2) { //if only ATOI mins found
 				allPlayers[i].ATOI[2] = ':';
 				allPlayers[i].ATOI[3] = '0';
 				allPlayers[i].ATOI[4] = '0';
 			}
-			allPlayers[i].ATOI[5] = '\0';
+			allPlayers[i].ATOI[5] = '\0'; //add null character
+		} else {
+			printf ("\nError: No ATOI stat found, a crucial statistic that is needed");
+			return -1;
 		}
-		
 		
 		int num_signed_int = 0;
 		int temp[9] = {0}; //temp array to store data from file
 		
 		for (int structElements = 0; structElements < 9; structElements++) {	
 			
-			if (fscanf (FileIN, "%d", &temp[structElements]) == 0) 
+			if (fscanf (FileIN, "%d", &temp[structElements]) == 0) //error occurred
 				continue;
 			
 			if ((structElements < 4 || structElements > 4) && structElements < 10) { //error checking for statistic 1-4 and 5-10
@@ -190,6 +193,8 @@ int readFile (const char* tfile) {
 			else 
 				fseek(FileIN, -1, SEEK_CUR); //move back one character to continue taking in statistics
 		}
+		
+		//error checking to ensure stats entered make sense in the hockey sense
 		if ((temp[1] + temp[2] != temp[3]) || (temp[1] > temp[3]) || (temp[2] > temp[3])) {
 			printf ("Invalid number of goals/assists/points for player %d, goals+assists = points\n", i+1);
 			return -1;
@@ -206,9 +211,8 @@ int readFile (const char* tfile) {
 			printf ("Invalid Faceoff Percentage statistic entered, must be a positive value\n");
 		}
 		
-		
-			
-		allPlayers[i].GP = temp[0]; //transfer over data from temp integer array to struct data
+		//transfer over data from temp integer array to struct data
+		allPlayers[i].GP = temp[0]; 
 		allPlayers[i].goals = temp[1];
 		allPlayers[i].assists = temp[2];
 		allPlayers[i].points = temp[3];
@@ -238,28 +242,29 @@ int calcStats (int PlayerNumber) {
 		if (allPlayers[num].ATOI[loc] > '0' && allPlayers[num].ATOI[loc] < '6') {
 			loc++;
 			if (allPlayers[num].ATOI[loc] == ':') { //single minute ATOI
-				char temp_ATOI[2];
+				char temp_ATOI[2]; //a temporary string
 				temp_ATOI[0] = allPlayers[num].ATOI[loc-1];
 				temp_ATOI[1] = '\0';
-				int temporary_ATOI = atoi(temp_ATOI);
+				int temporary_ATOI = atoi(temp_ATOI); //get integer vaule of the ATOI minutes
 				TOI_mins += (float)temporary_ATOI;
 			} else if (allPlayers[num].ATOI[loc] > '0' && allPlayers[num].ATOI[loc] <= '9') { //double digit minute ATOI
-				char temp_ATOI2 [3];
+				char temp_ATOI2 [3]; //a temporary string for a 2-digit ATOI minute
 				memcpy (temp_ATOI2, allPlayers[num].ATOI, 2);
 				temp_ATOI2[2] = '\0';
-				int temporary_ATOI2 = atoi(temp_ATOI2);
+				int temporary_ATOI2 = atoi(temp_ATOI2); //calc the integer value of ATOI in minutes
 				TOI_mins += temporary_ATOI2;
 				loc++;
 			} else 
 				break;
 			
 			loc++;
-			char secs_ATOI[2];
+			char secs_ATOI[3]; //same procedure for calculating ATOI seconds as an integer value from string
 			secs_ATOI[0] = allPlayers[num].ATOI[loc];
 			loc++;
 			secs_ATOI[1] = allPlayers[num].ATOI[loc];
-			int ATOI_secs = atoi(secs_ATOI);
-			fATOI = TOI_mins + (float)(ATOI_secs/60.0);
+			secs_ATOI[2] = '\0';
+			int ATOI_secs = atoi(secs_ATOI); //calculate the integer value of the ATOI seconds
+			fATOI = TOI_mins + (float)(ATOI_secs/60.0); //combine mins and secs to form the floating number for ATOi
 		} else {
 			printf ("Invalid ATOI present\n");
 			return -1;
@@ -271,6 +276,7 @@ int calcStats (int PlayerNumber) {
 		allPlayers[num].goal_percentage = allPlayers[num].assist_percentage = 0;
 		allPlayers[num].defensiveness  = allPlayers[num].PIM_per_game = 0;
 		
+		//calculate the different stats from the basic stats inputted for each player, only if they are non-zero
 		if (allPlayers[num].points)
 			allPlayers[num].points_per_60 = (float)allPlayers[num].points * (60.0/fATOI);
 		
@@ -298,14 +304,45 @@ int calcStats (int PlayerNumber) {
 		if (allPlayers[num].plus_minus)
 			allPlayers[num].plus_minus_per_60 = (float)allPlayers[num].plus_minus * (60.0/fATOI);
 		
-		if (allPlayers[num].PIM)
-			allPlayers[num].PIM_per_game = ((float)allPlayers[num].PIM) / ((float)allPlayers[num].GP);
+		if (allPlayers[num].GP) {
+			if (allPlayers[num].PIM)
+				allPlayers[num].PIM_per_game = ((float)allPlayers[num].PIM) / ((float)allPlayers[num].GP);
+			
+			if (allPlayers[num].hits || allPlayers[num].blocked_shots) //only one of them has to be non-zero since this is just addition
+				allPlayers[num].defensiveness = ((float)(allPlayers[num].hits + allPlayers[num].blocked_shots)) / ((float)allPlayers[num].GP);
+		}
 		
-		if (allPlayers[num].hits || allPlayers[num].blocked_shots)
-			allPlayers[num].defensiveness = ((float)(allPlayers[num].hits + allPlayers[num].blocked_shots)) / ((float)allPlayers[num].GP);
-		
-		int x = 1 + 2;
 	}
 	
-	return 1;
+	return 0;
+}
+
+int exportData (int Players) {
+	FILE* csvFile;
+	csvFile = fopen ("HockeyStats.csv", "w");
+	
+	//print the top row, all headers for the statistics
+	fputs("Name,Goals,Assists,Points,+/-,Shots,PIM,Hits,Blocks,F%,ATOI,\
+	S%,Goals/60,Assists/60,Points/60,Shots/60,+/- /60,PIM/game,G%,A%,Def,\n",csvFile);
+	
+	//print out all the stats of each player, floats reduced to 2 decimal place
+	// "'" added in front of ATOI to avoid Excel from convertin to time/date format
+	for (int e = 0; e < Players; e++) {
+		int safety = 0;
+		safety = fprintf(csvFile, "%s,%d,%d,%d,%d,%d,%d,%d,%d,%.2f%,'%s,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,\n",\
+		allPlayers[e].name,allPlayers[e].goals,allPlayers[e].assists,allPlayers[e].points,allPlayers[e].plus_minus,\
+		allPlayers[e].shots,allPlayers[e].PIM,allPlayers[e].hits,allPlayers[e].blocked_shots,\
+		allPlayers[e].faceoff_percent,allPlayers[e].ATOI,allPlayers[e].shot_percent,\
+		allPlayers[e].goals_per_60,allPlayers[e].assists_per_60,allPlayers[e].points_per_60,\
+		allPlayers[e].shots_per_60,allPlayers[e].plus_minus_per_60,allPlayers[e].PIM_per_game,\
+		allPlayers[e].goal_percentage,allPlayers[e].assist_percentage,allPlayers[e].defensiveness);
+		if (safety < 0){
+			printf ("\nAn error occured when exporting the data, check your permission settings\n");
+			return -1;
+		}
+	}
+	
+	fclose(csvFile);
+	
+	return 0;
 }
