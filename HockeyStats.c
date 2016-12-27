@@ -28,7 +28,7 @@ typedef struct Players {
 	float PIM_per_game;
 	float goal_percentage; //goals account for how much of the total points
 	float assist_percentage; //assists account for how much of the total points
-	float defensiveness; //a combination of hits and blocked shots combined with ATOI
+	float defensiveness; //a combination of hits and blocked shots combined with games played
 } thePlayers, *PlayerStats;
 
 int readFile (const char* tfile);
@@ -107,17 +107,64 @@ int readFile (const char* tfile) {
 		
 		//if the first letter is not a character, it means that 2nd word was indeed a statistic, player's name is only 1 word
 		if (temporary[0] > 47 && temporary[0] < 58) { 
-			int ch = atoi (temporary); //convert number to integer
-			int digits = 0;
-			while (ch != 0) { //find the number of digits in the number
-				ch = ch/10;
-				digits++;
-			}
-			fseek (FileIN, -(digits+1), SEEK_CUR); //move back specific number of places according the number of digits
+			int ch = 0;
+			while (temporary[ch] != '\0')
+				ch++;
+			
+			// int ch = atoi (temporary); //convert number to integer
+			// int digits = 0;
+			// while (ch != 0) { //find the number of digits in the number
+				// ch = ch/10;
+				// digits++;
+			// }
+			fseek (FileIN, -ch, SEEK_CUR); //move back specific number of places according the number of digits
 		} else {
 			strcat(allPlayers[i].name, " "); //if 2nd word was indeed a character, player has a 2 word name
 			strcat(allPlayers[i].name, temporary); // join the 2 words to form one string in the struct
 		}
+		
+		char t;
+		t = getc(FileIN);
+		while (!isalnum(t) && t!=EOF)
+			t = getc(FileIN);
+		
+		if (!isalpha(t)) {
+			int x = 0;
+			int checker = 1000;
+			while (t != ' ' && t != '\n' && t != EOF && x < 5) {
+				allPlayers[i].ATOI[x] = t;
+				x++;
+				t = getc (FileIN);
+				if (t == ':') { //check for valid minutes number in ATOI
+					checker = x;
+					int check_mins = atoi (allPlayers[i].ATOI);
+					if (check_mins < 0 || check_mins > 60) {
+						printf ("Invalid ATOI minutes for player %d\n", i+1);
+						return -1;
+					}
+				}
+				if (x == checker + 2) { //check for valid seconds number in ATOI
+					char secs [3];
+					memcpy(secs, &allPlayers[i].ATOI[3], 2);
+					secs[3] = '\0';
+					int check_secs = atoi (secs);
+					if (check_secs < 0 || check_secs > 60) {
+						printf ("Invalid ATOI minutes for player %d\n", i+1);
+						return -1;
+					}
+				}
+			}
+			if (x == 0) {
+				memcpy(allPlayers[i].ATOI, "00:00", 5);
+			}
+			if (x == 2) {
+				allPlayers[i].ATOI[2] = ':';
+				allPlayers[i].ATOI[3] = '0';
+				allPlayers[i].ATOI[4] = '0';
+			}
+			allPlayers[i].ATOI[5] = '\0';
+		}
+		
 		
 		int num_signed_int = 0;
 		int temp[9] = {0}; //temp array to store data from file
@@ -143,50 +190,23 @@ int readFile (const char* tfile) {
 			else 
 				fseek(FileIN, -1, SEEK_CUR); //move back one character to continue taking in statistics
 		}
+		if ((temp[1] + temp[2] != temp[3]) || (temp[1] > temp[3]) || (temp[2] > temp[3])) {
+			printf ("Invalid number of goals/assists/points for player %d, goals+assists = points\n", i+1);
+			return -1;
+		}
+		
+		if ((temp[1] > temp[5])) {
+			printf ("Invalid number of goals/shots for player %d, goals+assists = points\n", i+1);
+			return -1;
+		}
+		
 		allPlayers[i].faceoff_percent = 0; 
 		fscanf (FileIN, "%f", &allPlayers[i].faceoff_percent); //directly put in the faceoff_percent value
 		if (allPlayers[i].faceoff_percent < 0) {
 			printf ("Invalid Faceoff Percentage statistic entered, must be a positive value\n");
 		}
 		
-		char t;
-		t = getc(FileIN);
-		while (!isalnum(t) && t!=EOF)
-			t = getc(FileIN);
 		
-		if (!isalpha(t)) {
-			int x = 0;
-			while (t != ' ' && t != '\n' && t != EOF && x < 5) {
-				allPlayers[i].ATOI[x] = t;
-				x++;
-				t = getc (FileIN);
-				if (x == 2) { //check for valid minutes number in ATOI
-					int check_mins = atoi (allPlayers[i].ATOI);
-					if (check_mins < 0 || check_mins > 60) {
-						printf ("Invalid ATOI minutes for player %d\n", i+1);
-						return -1;
-					}
-				}
-				if (x == 5) { //check for valid seconds number in ATOI
-					char secs [2];
-					memcpy(secs, &allPlayers[i].ATOI[3], 2);
-					int check_secs = atoi (secs);
-					if (check_secs < 0 || check_secs > 60) {
-						printf ("Invalid ATOI minutes for player %d\n", i+1);
-						return -1;
-					}
-				}
-			}
-			if (x == 0) {
-				memcpy(allPlayers[i].ATOI, "00:00", 5);
-			}
-			if (x == 2) {
-				allPlayers[i].ATOI[2] = ':';
-				allPlayers[i].ATOI[3] = '0';
-				allPlayers[i].ATOI[4] = '0';
-			}
-			allPlayers[i].ATOI[5] = '\0';
-		}
 			
 		allPlayers[i].GP = temp[0]; //transfer over data from temp integer array to struct data
 		allPlayers[i].goals = temp[1];
@@ -210,6 +230,7 @@ int readFile (const char* tfile) {
 } 
 
 int calcStats (int PlayerNumber) {
+	float fATOI;
 	
 	for (int num = 0; num < PlayerNumber; num++) {
 		float TOI_mins = 0; //calculating the ATOI stat as a float
@@ -217,27 +238,74 @@ int calcStats (int PlayerNumber) {
 		if (allPlayers[num].ATOI[loc] > '0' && allPlayers[num].ATOI[loc] < '6') {
 			loc++;
 			if (allPlayers[num].ATOI[loc] == ':') { //single minute ATOI
-				char temp_ATOI[1];
+				char temp_ATOI[2];
 				temp_ATOI[0] = allPlayers[num].ATOI[loc-1];
+				temp_ATOI[1] = '\0';
 				int temporary_ATOI = atoi(temp_ATOI);
 				TOI_mins += (float)temporary_ATOI;
 			} else if (allPlayers[num].ATOI[loc] > '0' && allPlayers[num].ATOI[loc] <= '9') { //double digit minute ATOI
-				char temp_ATOI2 [2];
+				char temp_ATOI2 [3];
 				memcpy (temp_ATOI2, allPlayers[num].ATOI, 2);
+				temp_ATOI2[2] = '\0';
 				int temporary_ATOI2 = atoi(temp_ATOI2);
 				TOI_mins += temporary_ATOI2;
 				loc++;
 			} else 
 				break;
+			
+			loc++;
+			char secs_ATOI[2];
+			secs_ATOI[0] = allPlayers[num].ATOI[loc];
+			loc++;
+			secs_ATOI[1] = allPlayers[num].ATOI[loc];
+			int ATOI_secs = atoi(secs_ATOI);
+			fATOI = TOI_mins + (float)(ATOI_secs/60.0);
+		} else {
+			printf ("Invalid ATOI present\n");
+			return -1;
 		}
-		loc++;
-		char secs_ATOI[2];
-		secs_ATOI[0] = allPlayers[num].ATOI[loc];
-		loc++;
-		secs_ATOI[1] = allPlayers[num].ATOI[loc];
-		int ATOI_secs = atoi(secs_ATOI);
-		float fATOI = TOI_mins + (float)(ATOI_secs/60.0);
 		
+		//default parameters for calculated values;
+		allPlayers[num].shot_percent = allPlayers[num].points_per_60 = allPlayers[num].shots_per_60 = 0;
+		allPlayers[num].goals_per_60 = allPlayers[num].assists_per_60 = allPlayers[num].plus_minus_per_60 = 0;
+		allPlayers[num].goal_percentage = allPlayers[num].assist_percentage = 0;
+		allPlayers[num].defensiveness  = allPlayers[num].PIM_per_game = 0;
+		
+		if (allPlayers[num].points)
+			allPlayers[num].points_per_60 = (float)allPlayers[num].points * (60.0/fATOI);
+		
+		if (allPlayers[num].shots)
+			allPlayers[num].shots_per_60 = (float)allPlayers[num].shots * (60.0/fATOI);
+		
+		if (allPlayers[num].goals) {
+			allPlayers[num].goals_per_60 = (float)allPlayers[num].goals * (60.0/fATOI);
+			
+			if (allPlayers[num].points)
+				allPlayers[num].goal_percentage = ((float)allPlayers[num].goals)/((float)allPlayers[num].points) * 100.0;
+			
+			if (allPlayers[num].shots)
+				allPlayers[num].shot_percent = ((float)allPlayers[num].goals)/((float)allPlayers[num].shots) * 100.0;
+		}
+		
+		if (allPlayers[num].assists) {
+			allPlayers[num].assists_per_60 = (float)allPlayers[num].assists * (60.0/fATOI);
+			
+			if (allPlayers[num].points)
+				allPlayers[num].assist_percentage = ((float)allPlayers[num].assists)/((float)allPlayers[num].points) * 100.0;
+			
+		}
+		
+		if (allPlayers[num].plus_minus)
+			allPlayers[num].plus_minus_per_60 = (float)allPlayers[num].plus_minus * (60.0/fATOI);
+		
+		if (allPlayers[num].PIM)
+			allPlayers[num].PIM_per_game = ((float)allPlayers[num].PIM) / ((float)allPlayers[num].GP);
+		
+		if (allPlayers[num].hits || allPlayers[num].blocked_shots)
+			allPlayers[num].defensiveness = ((float)(allPlayers[num].hits + allPlayers[num].blocked_shots)) / ((float)allPlayers[num].GP);
+		
+		int x = 1 + 2;
 	}
+	
 	return 1;
 }
