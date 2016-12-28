@@ -240,25 +240,38 @@ $(document).ready(function() {
 		
 		// for every special char present, add 2 to checkpoints
 		for (var i = 0; i < Text.length; i++) {
-			if (Chars.indexOf(Text.charAt(i)) >= 0)
+			if (Chars.indexOf(Text.charAt(i)) >= 0) {
 				checkpoints += 2;
+				$('#Strengths ul li:last-child').css('color', 'green');
+			} else 
+				$('#Strengths ul li:last-child').css('color', 'red');
+			//changing text colors depending on whether criteria has been fullfilled
 		}
 		
 		// Two separate for-loops because this one terminates as soon as 1 number is seen
 		for (var j = 0; j < Text.length; j++){
 			if (Numbers.indexOf(Text.charAt(j)) >= 0) {
 				checkpoints += 2;
+				$('#Strengths ul li:nth-child(3)').css('color', 'green');
 				break;
-			}
+			} else 
+				$('#Strengths ul li:nth-child(3)').css('color', 'red');
+				
 		}
 		
 		if (/[a-z]/.test(Text)) {
 			checkpoints++;
-		}
+			$('#Strengths ul li:first-child').css('color', 'green');
+		} else 
+			$('#Strengths ul li:first-child').css('color', 'red');
 		
 		if (/[A-Z]/.test(Text)) {
 			checkpoints += 2;
-		}
+			$('#Strengths ul li:nth-child(2)').css('color', 'green');
+		} else 
+			$('#Strengths ul li:nth-child(2)').css('color', 'red');
+		//changing text colors depending on whether criteria has been fullfilled
+
 		
 		//have to remove all complementary classes for each if statement 
 		//to ensure proper check shown if multiple characters added/removed
@@ -268,6 +281,7 @@ $(document).ready(function() {
 			$('#Tester').removeClass('VeryGood');
 			$('#Tester').removeClass('Strong');
 			$('#Tester').text('');
+			$('#Strengths ul li').css('color', 'red');
 		} else if (checkpoints < 3) {
 			$('#Tester').removeClass('Good');
 			$('#Tester').removeClass('VeryGood');
