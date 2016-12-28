@@ -216,4 +216,85 @@ $(document).ready(function() {
 		simulate = setInterval(progressSim, 25);
 	});
 	
+	// Code for the password tester, had to remove all classes each time
+	 // to ensure if multiple characters are removed, valid password strength shown
+	$('#PasswordTest').keyup(function(){
+		var length = $('#PasswordTest').val().length;
+		var checkpoints = 0;
+		
+		// add to checkpoints according to length of string
+		if (length > 0) {
+			if (length < 4)
+				checkpoints += 1;
+			else if (length < 8)
+				checkpoints += 2;
+			else if (length < 12)
+				checkpoints += 3;
+			else
+				checkpoints += 4;
+		}
+		var passwordText = document.getElementById("PasswordTest");
+		var Text = passwordText.value;
+		var Chars = "!@#$%^&*_~`?><-+";
+		var Numbers = "0123456789";
+		
+		// for every special char present, add 2 to checkpoints
+		for (var i = 0; i < Text.length; i++) {
+			if (Chars.indexOf(Text.charAt(i)) >= 0)
+				checkpoints += 2;
+		}
+		
+		// Two separate for-loops because this one terminates as soon as 1 number is seen
+		for (var j = 0; j < Text.length; j++){
+			if (Numbers.indexOf(Text.charAt(j)) >= 0) {
+				checkpoints += 2;
+				break;
+			}
+		}
+		
+		if (/[a-z]/.test(Text)) {
+			checkpoints++;
+		}
+		
+		if (/[A-Z]/.test(Text)) {
+			checkpoints += 2;
+		}
+		
+		//have to remove all complementary classes for each if statement 
+		//to ensure proper check shown if multiple characters added/removed
+		if (checkpoints == 0) {
+			$('#Tester').removeClass('Weak');
+			$('#Tester').removeClass('Good');
+			$('#Tester').removeClass('VeryGood');
+			$('#Tester').removeClass('Strong');
+			$('#Tester').text('');
+		} else if (checkpoints < 3) {
+			$('#Tester').removeClass('Good');
+			$('#Tester').removeClass('VeryGood');
+			$('#Tester').removeClass('Strong');
+			$('#Tester').text('Weak');
+			$('#Tester').addClass('Weak');
+		} else if (checkpoints < 6) {
+			$('#Tester').removeClass('Weak');
+			$('#Tester').removeClass('VeryGood');
+			$('#Tester').removeClass('Strong');
+			$('#Tester').text('Good');
+			$('#Tester').addClass('Good')
+		} else if (checkpoints < 9) {
+			$('#Tester').removeClass('Weak');
+			$('#Tester').removeClass('Good');
+			$('#Tester').removeClass('Strong');
+			$('#Tester').text('Very Good');
+			$('#Tester').addClass('VeryGood')
+		} else {
+			$('#Tester').removeClass('Weak');
+			$('#Tester').removeClass('Good');
+			$('#Tester').removeClass('VeryGood');
+			$('#Tester').text('Strong');
+			$('#Tester').addClass('Strong');
+		}
+		
+		
+	})
+	
 });
