@@ -207,7 +207,7 @@ $(document).ready(function() {
 			clearTimeout(simulate);
 		}
 		loaded++;
-	}
+	};
 	
 	var simulate = setInterval(progressSim, 25);
 	
@@ -307,8 +307,37 @@ $(document).ready(function() {
 			$('#Tester').text('Strong');
 			$('#Tester').addClass('Strong');
 		}
+	});
+	
+	$('#Enlarge')
+		.on('mouseenter',function () {
+			$(this).stop(true, true).animate({margin:-10, height: "+=20", width: "+=20",lineHeight: "+=20"}, 'fast');
+		})
+		.on('mouseleave', function() {
+			$(this).stop(true, true).animate({margin:0, width: "-=20", height: "-=20",lineHeight: "-=20"},'fast');
+		});
+	
+	$('#Rotate')
+		.on('mouseenter', function () {
+			$(this).css('transform', 'rotate(360deg)');
+		})
+		.on('mouseleave', function () {
+			$(this).css('transform', 'rotate(0deg)');
+		});
 		
+	$('#Translate')
+		.on('mouseenter',function () {
+			$(this).css('transform', 'translate(0px,50px)');
+		})
+		.on('mouseleave',function () {
+			$(this).css('transform', 'translate(0,0)');
+		})
+		.on('click', function() {
+			$(this).css('transform', 'translate(-50px, 0)');
+		})
+		.on('dblclick', function() {
+			$(this).css('transform', 'translate(0, -50px)');
+		})
 		
-	})
 	
 });
