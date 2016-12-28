@@ -195,3 +195,59 @@ tr:nth-child(even) {
 	font-size: 17px;
 }
 
+#Strengths {
+	width: 275px;
+	background-color: #A8FFDA;
+	font-size: 14px;
+	border: 3px dashed;
+	border-color: blue;
+}
+
+#Enlarge {
+	width: 200px;
+	height: 100px;
+	background: linear-gradient(45deg, #ED9AFF, #A5FF9A);
+	border: 8px;
+	border-style: double;
+	border-color: #0A696C;
+	text-align: center;
+	line-height: 100px;
+	font-family: Corbell;
+	font-size: 25px;
+}
+
+#Rotate {
+	width: 200px;
+	height: 100px;
+	background: linear-gradient(45deg, #F9F065, #DD8139);
+	position: relative;
+	margin-left: 300px;
+	margin-top: -115px;
+	border: 8px;
+	border-style: double;
+	border-color: #1330A7;
+	text-align: center;
+	line-height: 100px;
+	font-family: Corbell;
+	font-size: 25px;
+	transition-duration: 1s;
+	transition-property: transform;
+}
+
+#Translate {
+	width: 200px;
+	height: 100px;
+	background: linear-gradient(225deg, #6AE5F9, #E922CB);
+	position: relative;
+	margin-left: 600px;
+	margin-top: -115px;
+	border: 8px;
+	border-style: double;
+	border-color: #1330A7;
+	text-align: center;
+	line-height: 45px;
+	font-family: Corbell;
+	font-size: 25px;
+	transition-duration: 1s;
+	transition-property: transform;
+}
