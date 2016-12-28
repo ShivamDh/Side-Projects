@@ -166,3 +166,32 @@ tr:nth-child(even) {
 	font-family: Quicksand, Open Sans, Arial, Times New Roman;
 	color: #00e68a;
 }
+
+.Weak {
+	background-color: red;
+	padding: 0px 10px;
+	color: white;
+	font-size: 17px;
+}
+
+.Good {
+	background-color: orange;
+	padding: 0px 10px;
+	color: black;
+	font-size: 17px;
+}
+
+.VeryGood {
+	background-color: yellow;
+	padding: 0px 10px;
+	color: black;
+	font-size: 17px;
+}
+
+.Strong {
+	background-color: green;
+	padding: 0px 10px;
+	color: white;
+	font-size: 17px;
+}
+
