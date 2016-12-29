@@ -13,7 +13,8 @@ typedef struct Person {
 	struct Person* next; //the struct pointer for the next item in the list
 }People, *thePeople;
 
-int read(const char* iFile);
+int read ();
+// int read(const char* iFile);
 
 thePeople head; //struct pointer for the first struct, global scope to keep it accessible in all functions
 int Ppl; //global scope integer for how many people exist within the linked list
@@ -26,8 +27,27 @@ int main() {
 	int choice;
 	scanf("%d", &choice);
 	if (choice == 1) {
-		int key = 65;
-		puts ("Press Esc or Ctr+C to exit inputting information\n");
+		read();
+	} else if (choice == 2) {
+		printf ("Enter the text file with extension (.txt)");
+		char givenFile[50];
+		scanf ("%s", givenFile);
+		printf ("%s", givenFile);
+		// read (givenFile);
+		
+	} else {
+		printf ("Sorry wrong choice input entered");
+		return -1;
+	}
+	
+	
+	
+	return 0;
+}
+
+int read () {
+	int key = 65;
+		puts ("Press Esc to finish inputting information\n");
 		int attain_info = 0;
 		head = (thePeople) malloc(sizeof(People)); //create one struct to begin with
 		thePeople input = head;
@@ -51,8 +71,13 @@ int main() {
 						if (key == 27 || key == 3) //escape or CtrC pressed
 							goto inputEnded;
 						else if (key == 13) { //new line char seen
-							input->firstName[j+1] = 0;
+							input->firstName[j] = 0;
 							break;
+						} else if (key == 8){ //if backspace is asked for
+							input->firstName[j-1] = 0;
+							j-=2;
+							printf("\n%s", input->firstName);
+							continue;
 						}
 						input->firstName[j] = key;
 						printf ("%c", key);
@@ -61,25 +86,28 @@ int main() {
 				case 1: 
 					puts("\nEnter the middle initial: ");
 					key = getch();
-					if (key == 27 || key == 3)
+					if (key == 27 || key == 3) //escape or Ctr+C pressed
 						goto inputEnded;
 					printf ("%c", key);
 					input->midInitial = key;
 					break;
 				case 2:
 					puts("\nEnter the last name: ");
-					key = getch();
-						printf ("%c", key);
 					for (int k = 0; k < maxL; k++) {
-						input->lastName[k] = key;
 						key = getch();
-						printf ("%c", key);
 						if (key == 27 || key == 3) //escape or CtrC pressed
 							goto inputEnded;
 						else if (key == 13) { //new line char seen
-							input->lastName[k+1] = 0;
+							input->lastName[k] = 0;
 							break;
+						} else if (key == 8){ //if backspace is asked for
+							input->lastName[k-1] = 0;
+							k-=2;
+							printf("\n%s", input->lastName);
+							continue;
 						}
+						input->lastName[k] = key;
+						printf ("%c", key);
 					}
 					break;
 				case 3:  {
@@ -87,50 +115,61 @@ int main() {
 					int numb = 0;
 					key = getch();
 					for (int l = 0; l < 3; l++) {
-						if (!isdigit(key))
-							goto inputEnded;
-						printf ("%c", key);
-						numb = numb*10 + (key-48);
-						key = getch();
-						if (key == 27 || key == 3) { //escape or CtrC pressed
+						if (!isdigit(key) && key != 8 && key != 13) {
 							goto inputEnded;
 							input->age = numb;
+						}
+						if (key == 8){
+							l -=2;
+							numb /= 10;
+							printf ("\n%i", numb);
+							key = getch();
+							continue;
 						} else if (key == 13) { //new line char seen
 							break;
 						}
+						printf ("%c", key);
+						numb = numb*10 + (key-48);
+						key = getch();
 					}
 					input->age = numb;
 					break; }
 				case 4: 
 					puts("\nEnter their city: ");
-					key = getch();
-					printf ("%c", key);
 					for (int m = 0; m < maxL; m++) {
-						input->city[m] = key;
 						key = getch();
-						printf ("%c", key);
 						if (key == 27 || key == 3) //escape or CtrC pressed
 							goto inputEnded;
 						else if (key == 13) { //new line char seen
-							input->city[m+1] = 0;
+							input->city[m] = 0;
 							break;
+						} else if (key == 8){ //if backspace is asked for
+							input->city[m-1] = 0;
+							m-=2;
+							printf("\n%s", input->city);
+							continue;
 						}
+						input->city[m] = key;
+						printf ("%c", key);
 					}
 					break;
 				case 5:
 					puts("\nEnter their country: ");
-					key = getch();
-					printf ("%c", key);
 					for (int n = 0; n < maxL; n++) {
-						input->country[n] = key;
 						key = getch();
-						printf ("%c", key);
 						if (key == 27 || key == 3) //escape or CtrC pressed
 							goto inputEnded;
 						else if (key == 13) { //new line char seen
-							input->country[n+1] = 0;
+							input->country[n] = 0;
 							break;
+						} else if (key == 8){ //if backspace is asked for
+							input->country[n-1] = 0;
+							n-=2;
+							printf("\n%s", input->country);
+							continue;
 						}
+						input->country[n] = key;
+						printf ("%c", key);
 					}
 					check = 1;
 					break;
@@ -144,31 +183,17 @@ int main() {
 		inputEnded: ;
 		thePeople toPrint = head;
 		for (int a = 0; a < Ppl; a++) {
-			printf ("%s %c %s %i %s %s", toPrint->firstName, toPrint->midInitial, toPrint->lastName, toPrint->age, toPrint->city, toPrint->country);
+			printf ("\n\nEntered: %s %c %s %i %s %s\n", toPrint->firstName,\
+			toPrint->midInitial, toPrint->lastName, toPrint->age, toPrint->city, toPrint->country);
 			toPrint = toPrint->next;
 			if (toPrint == NULL)
 				break;
 		}
-	} else if (choice == 2) {
-		printf ("Enter the text file with extension (.txt)");
-		char givenFile[50];
-		scanf ("%s", givenFile);
-		printf ("%s", givenFile);
-		// read (givenFile);
-		
-	} else {
-		printf ("Sorry wrong choice input entered");
-		return -1;
-	}
-	
-	
-	
-	return 0;
 }
-
 
 int read(const char* iFile) { //reading the file if provided
 	
 	
 	
 }
+
