@@ -16,6 +16,8 @@ typedef struct Person {
 
 int read ();
 int read(const char* iFile);
+void swap (thePeople temporary1, thePeople temporary2);
+int compare(char* str1, char* str2);
 
 thePeople head; //struct pointer for the first struct, global scope to keep it accessible in all functions
 int Ppl = 0;; //global scope integer for how many people exist within the linked list
@@ -27,10 +29,10 @@ int main() {
 	int choice;
 	scanf("%i", &choice);
 	if (choice == 1) {
-		if (read()){
-			printf ("\nAn error occurred while inputting data manually\n");
-			return -1;
-		}
+		// if (read()){
+			// printf ("\nAn error occurred while inputting data manually\n");
+			// return -1;
+		// }
 	} else if (choice == 2) {
 		printf ("\nEnter the text file with extension (.txt)\n");
 		printf ("Ensure that all 6 fields are entered in the text file, \
@@ -66,6 +68,19 @@ int main() {
 		scanf ("%i", &choice2);
 		switch (choice2){
 			case 1: 
+				for (int loops = 0; loops < Ppl-1; loops++) {
+					for (int iter = 0; iter < Ppl-1-loops; iter++) {
+						thePeople temporary1 = head;
+						thePeople temporary2;
+						for (int list = 0; list < iter; list++) {
+							if (list == (iter - 1)) //remember the item before the current item in case of swap
+								temporary2 = temporary1;
+							temporary1 = temporary1->next;
+						}
+						if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
+							swap (temporary1, temporary2);
+					}
+				}
 				break;
 			case 2: 
 				break;
@@ -81,19 +96,8 @@ int main() {
 								temporary2 = temporary1;
 							temporary1 = temporary1->next;
 						}
-						if (temporary1->age > temporary1->next->age) {
-							if (reps == 0) { //swapping the head, head == temporary1
-								thePeople swap = head->next->next;
-								head = head->next;
-								head->next = temporary1;
-								temporary1->next = swap;
-							} else { //changing past the head
-								thePeople swap = temporary1->next;
-								temporary1->next = temporary1->next->next;
-								swap->next = temporary1;
-								temporary2->next = swap;
-							}
-						}
+						if (temporary1->age > temporary1->next->age)
+							swap(temporary1, temporary2);
 					}
 				}
 				break;
@@ -125,6 +129,20 @@ int main() {
 	}
 	
 	return 0;
+}
+
+void swap (thePeople person1, thePeople person2) {
+	if (person1 == head) { //swapping the head and the 2nd item in the list
+		thePeople swap = head->next->next;
+		head = head->next;
+		head->next = person1;
+		person1->next = swap;
+	} else { //changing past the head
+		thePeople swap = person1->next;
+		person1->next = person1->next->next;
+		swap->next = person1;
+		person2->next = swap;
+	}
 }
 
 int read () {
@@ -356,3 +374,29 @@ int read(const char* iFile) { //reading the file if provided
 	return 0;	
 }
 
+int compare(char* str1, char* str2) {
+		int i = 0;
+		while (i < 19) { //max string length
+			int r1 = str1[i]; //take in ASCII vaues of characters and put them into an integer
+			int r2 = str2[i]; 
+		
+			if (r1 > 96 && r1 < 123) //see if the first integer represents a lowercase letter
+				r1 -= 32; //turn it into a capital letter
+			if (r2 > 96 && r2 < 123) //see if the second integer represents a lowercase letter
+				r2 -= 32; //turn it into a capital letter
+		
+			if (r1 < r2) //compare the two integers
+				return -1;
+			if (r1 > r2)
+				return 1;
+		
+			if (r1 == '\0' && r2 == '\0') //if both elements end at the same letter and were common for the rest of the characters, they are same names
+				return 0;
+			if (r1 == '\0') //if first one was equal and shorter, it should be ahead
+				return -1;
+			if (r2 == '\0') //if second one was equal and shorter, it should be ahead
+				return 1;
+			i++;
+		}
+	return 0;
+}
