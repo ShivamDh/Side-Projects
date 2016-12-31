@@ -29,10 +29,10 @@ int main() {
 	int choice;
 	scanf("%i", &choice);
 	if (choice == 1) {
-		// if (read()){
-			// printf ("\nAn error occurred while inputting data manually\n");
-			// return -1;
-		// }
+		if (read()){
+			printf ("\nAn error occurred while inputting data manually\n");
+			return -1;
+		}
 	} else if (choice == 2) {
 		printf ("\nEnter the text file with extension (.txt)\n");
 		printf ("Ensure that all 6 fields are entered in the text file, \
@@ -79,12 +79,42 @@ int main() {
 						}
 						if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
 							swap (temporary1, temporary2);
+						else if (compare(temporary1->firstName, temporary1->next->firstName) == 0) {
+							if (temporary1->midInitial > temporary1->next->midInitial)
+								swap(temporary1, temporary2);
+							else if (temporary1->midInitial == temporary1->next->midInitial) {
+								if (compare(temporary1->lastName, temporary1->next->lastName) > 0)
+									swap(temporary1, temporary2);
+							}
+						}
 					}
 				}
 				break;
 			case 2: 
+
 				break;
 			case 3: 
+				for (int loops = 0; loops < Ppl-1; loops++) {
+					for (int iter = 0; iter < Ppl-1-loops; iter++) {
+						thePeople temporary1 = head;
+						thePeople temporary2;
+						for (int list = 0; list < iter; list++) {
+							if (list == (iter - 1)) //remember the item before the current item in case of swap
+								temporary2 = temporary1;
+							temporary1 = temporary1->next;
+						}
+						if (compare(temporary1->lastName, temporary1->next->lastName) > 0)
+							swap (temporary1, temporary2);
+						else if (compare(temporary1->lastName, temporary1->next->lastName) == 0) {
+							if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
+									swap(temporary1, temporary2);
+							else if (compare(temporary1->firstName, temporary1->next->firstName) == 0) {
+								if (temporary1->midInitial > temporary1->next->midInitial)
+									swap(temporary1, temporary2);	
+							}
+						}
+					}
+				}
 				break;
 			case 4: 
 				for (int sets = 0; sets < Ppl-1; sets++) {
@@ -102,8 +132,10 @@ int main() {
 				}
 				break;
 			case 5: 
+			
 				break;
 			case 6: 
+			
 				break;
 			default:
 				puts ("\nSorry wrong choice entered, try again\n");
@@ -400,3 +432,4 @@ int compare(char* str1, char* str2) {
 		}
 	return 0;
 }
+
