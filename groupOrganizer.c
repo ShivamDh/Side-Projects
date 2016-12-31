@@ -21,11 +21,11 @@ thePeople head; //struct pointer for the first struct, global scope to keep it a
 int Ppl = 0;; //global scope integer for how many people exist within the linked list
 
 int main() {
-	printf("How would you like to enter the data?\n");
+	DataEntering: printf("How would you like to enter the data?\n");
 	printf("\t(1) Manually\n \t(2) Through a text file\n");
 	
 	int choice;
-	scanf("%d", &choice);
+	scanf("%i", &choice);
 	if (choice == 1) {
 		if (read()){
 			printf ("\nAn error occurred while inputting data manually\n");
@@ -37,16 +37,14 @@ int main() {
 		\nif information is not present for a specific field, enter a '-' within that field:\n");
 		char givenFile[50];
 		scanf ("%s", givenFile);
-		printf ("%s", givenFile);
 		if (read (givenFile)) {
 			printf ("\nAn error occurred when reading the file\n");
 			return -1;
 		} else 
 			printf ("\nData has been read:");
-		
 	} else {
-		printf ("Sorry wrong choice input entered");
-		return -1;
+		printf ("Sorry wrong choice entered, try again");
+		goto DataEntering;
 	}
 	
 	thePeople toPrint = head;
@@ -58,7 +56,73 @@ int main() {
 			break;
 	}
 	
+	AskOrder: puts("\nDo you want to order this data according to a specific field(y/n): ");
+	char order = 0;
+	scanf (" %c", &order);
+	if (order == 'y') {
+		Ordering: puts("\nAccording to what field would like the data sorted:");
+		puts("\n\t(1) First Name \n\t(2) Middle Initial \n\t(3) Last Name \n\t(4) Age \n\t(5) City \n\t(6) Country\n");
+		int choice2;
+		scanf ("%i", &choice2);
+		switch (choice2){
+			case 1: 
+				break;
+			case 2: 
+				break;
+			case 3: 
+				break;
+			case 4: 
+				for (int sets = 0; sets < Ppl-1; sets++) {
+					for (int reps = 0; reps < Ppl-1-sets; reps++){
+						thePeople temporary1 = head;
+						thePeople temporary2;
+						for (int list = 0; list < reps; list++) {
+							if (list == (reps - 1)) //remember the item before the current item in case of swap
+								temporary2 = temporary1;
+							temporary1 = temporary1->next;
+						}
+						if (temporary1->age > temporary1->next->age) {
+							if (reps == 0) { //swapping the head, head == temporary1
+								thePeople swap = head->next->next;
+								head = head->next;
+								head->next = temporary1;
+								temporary1->next = swap;
+							} else { //changing past the head
+								thePeople swap = temporary1->next;
+								temporary1->next = temporary1->next->next;
+								swap->next = temporary1;
+								temporary2->next = swap;
+							}
+						}
+					}
+				}
+				break;
+			case 5: 
+				break;
+			case 6: 
+				break;
+			default:
+				puts ("\nSorry wrong choice entered, try again\n");
+				goto Ordering;
+		}
+	} else if (order == 'n'){
+		goto nextStep;
+	} else if (order == 'q') 
+		return -1;
+	else {
+		puts ("Wrong input entered, try again");
+		goto AskOrder;
+	}
+	nextStep: ;
 	
+	toPrint = head;
+	for (int reading2 = 0; reading2 < Ppl; reading2++) {
+		printf ("\nPerson %i: %s %c %s %i %s %s", reading2+1, toPrint->firstName,\
+		toPrint->midInitial, toPrint->lastName, toPrint->age, toPrint->city, toPrint->country);
+		toPrint = toPrint->next;
+		if (toPrint == NULL)
+			break;
+	}
 	
 	return 0;
 }
@@ -80,6 +144,7 @@ int read () {
 					Ppl++;
 					thePeople newPerson = (thePeople) malloc(sizeof(People));
 					input->next = newPerson;
+					newPerson->next = NULL;
 					input = newPerson;
 				}
 				printf("\n\nPerson %d\n", Ppl+1);
@@ -204,6 +269,7 @@ int read () {
 int read(const char* iFile) { //reading the file if provided
 	FILE* OpenFile;
 	OpenFile = fopen(iFile, "r");
+
 	
 	if (OpenFile == NULL) { //error check to ensure file opened properly
 		printf ("Input file was not opened\n");
@@ -212,23 +278,28 @@ int read(const char* iFile) { //reading the file if provided
 		
 	char temp[150];
 	int linechar;
+
 	while (fgets(temp, 149, OpenFile) != NULL) { //take in line by line
 		linechar = 0;
-		while (temp[linechar] != '\n')
+		while (temp[linechar] != '\n') {
 			linechar++;
+			if (isalnum(temp[linechar]))
+				break;
+		}
 		if (linechar == 0) //empty line found
 			continue;
 		Ppl++; //count up the number of players to have their statistics inputted
 	}
 	clearerr(OpenFile); //move back to the beginning to now start inputting tne data
 	fseek(OpenFile, 0, SEEK_SET);
-	
+
 	head = (thePeople) malloc(sizeof(People)); //create one struct to begin with
 	thePeople cursor = head;
 	for (int in = 0; in < Ppl; in++) {
 		if (in) {
 			thePeople temp = (thePeople) malloc(sizeof(People));
 			cursor->next = temp;
+			temp->next = NULL;
 			cursor = temp;
 		}
 		
@@ -242,21 +313,18 @@ int read(const char* iFile) { //reading the file if provided
 			t = getc(OpenFile);
 		fseek(OpenFile, -1, SEEK_CUR);
 		fscanf(OpenFile, "%19s", cursor->firstName);
-		printf ("%s", cursor->firstName);
 		
 		t = getc(OpenFile);
 		while (!isalnum(t) && t != EOF && t != '-') //move forward until alphanumeric character seen
 			t = getc(OpenFile);
 		fseek(OpenFile, -1, SEEK_CUR);
 		fscanf(OpenFile, "%c", &cursor->midInitial);
-		printf (" %c", cursor->midInitial);
 		
 		t = getc(OpenFile);
 		while (!isalnum(t) && t != EOF && t != '-') //move forward until alphanumeric character seen
 			t = getc(OpenFile);
 		fseek(OpenFile, -1, SEEK_CUR);
 		fscanf(OpenFile, "%19s", cursor->lastName);
-		printf (" %s", cursor->lastName);
 		
 		t = getc(OpenFile);
 		while (!isdigit(t) && t != EOF && t != '-')
@@ -277,15 +345,14 @@ int read(const char* iFile) { //reading the file if provided
 			t = getc(OpenFile);
 		fseek(OpenFile, -1, SEEK_CUR);
 		fscanf(OpenFile, "%19s", cursor->city);
-		printf (" %s", cursor->city);
 		
 		t = getc(OpenFile);
 		while (!isalnum(t) && t != EOF && t != '-') //move forward until alphanumeric character seen
 			t = getc(OpenFile);
 		fseek(OpenFile, -1, SEEK_CUR);
 		fscanf(OpenFile, "%19s", cursor->country);
-		printf (" %s", cursor->country);
 	}
+
 	return 0;	
 }
 
