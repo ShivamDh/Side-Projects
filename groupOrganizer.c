@@ -91,7 +91,27 @@ int main() {
 				}
 				break;
 			case 2: 
-
+				for (int loops = 0; loops < Ppl-1; loops++) {
+					for (int iter = 0; iter < Ppl-1-loops; iter++) {
+						thePeople temporary1 = head;
+						thePeople temporary2;
+						for (int list = 0; list < iter; list++) {
+							if (list == (iter - 1)) //remember the item before the current item in case of swap
+								temporary2 = temporary1;
+							temporary1 = temporary1->next;
+						}
+						if (temporary1->midInitial > temporary1->next->midInitial)
+							swap (temporary1, temporary2);
+						else if (temporary1->midInitial == temporary1->next->midInitial) {
+							if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
+								swap(temporary1, temporary2);
+							else if (compare(temporary1->firstName, temporary1->next->firstName) == 0) {
+								if (compare(temporary1->lastName, temporary1->next->lastName) > 0)
+									swap(temporary1, temporary2);
+							}
+						}
+					}
+				}
 				break;
 			case 3: 
 				for (int loops = 0; loops < Ppl-1; loops++) {
@@ -132,10 +152,42 @@ int main() {
 				}
 				break;
 			case 5: 
-			
+				for (int loops = 0; loops < Ppl-1; loops++) {
+					for (int iter = 0; iter < Ppl-1-loops; iter++) {
+						thePeople temporary1 = head;
+						thePeople temporary2;
+						for (int list = 0; list < iter; list++) {
+							if (list == (iter - 1)) //remember the item before the current item in case of swap
+								temporary2 = temporary1;
+							temporary1 = temporary1->next;
+						}
+						if (compare(temporary1->city, temporary1->next->city) > 0)
+							swap (temporary1, temporary2);
+						else if (compare(temporary1->city, temporary1->next->city) == 0) {
+							if (compare(temporary1->country, temporary1->next->country) > 0)
+								swap(temporary1, temporary2);
+						}
+					}
+				}
 				break;
 			case 6: 
-			
+				for (int loops = 0; loops < Ppl-1; loops++) {
+					for (int iter = 0; iter < Ppl-1-loops; iter++) {
+						thePeople temporary1 = head;
+						thePeople temporary2;
+						for (int list = 0; list < iter; list++) {
+							if (list == (iter - 1)) //remember the item before the current item in case of swap
+								temporary2 = temporary1;
+							temporary1 = temporary1->next;
+						}
+						if (compare(temporary1->country, temporary1->next->country) > 0)
+							swap (temporary1, temporary2);
+						else if (compare(temporary1->country, temporary1->next->country) == 0) {
+							if (compare(temporary1->city, temporary1->next->city) > 0)
+								swap(temporary1, temporary2);
+						}
+					}
+				}
 				break;
 			default:
 				puts ("\nSorry wrong choice entered, try again\n");
@@ -161,20 +213,6 @@ int main() {
 	}
 	
 	return 0;
-}
-
-void swap (thePeople person1, thePeople person2) {
-	if (person1 == head) { //swapping the head and the 2nd item in the list
-		thePeople swap = head->next->next;
-		head = head->next;
-		head->next = person1;
-		person1->next = swap;
-	} else { //changing past the head
-		thePeople swap = person1->next;
-		person1->next = person1->next->next;
-		swap->next = person1;
-		person2->next = swap;
-	}
 }
 
 int read () {
@@ -404,6 +442,20 @@ int read(const char* iFile) { //reading the file if provided
 	}
 
 	return 0;	
+}
+
+void swap (thePeople person1, thePeople person2) {
+	if (person1 == head) { //swapping the head and the 2nd item in the list
+		thePeople swap = head->next->next;
+		head = head->next;
+		head->next = person1;
+		person1->next = swap;
+	} else { //changing past the head
+		thePeople swap = person1->next;
+		person1->next = person1->next->next;
+		swap->next = person1;
+		person2->next = swap;
+	}
 }
 
 int compare(char* str1, char* str2) {
