@@ -18,6 +18,8 @@ int read ();
 int read(const char* iFile);
 void swap (thePeople temporary1, thePeople temporary2);
 int compare(char* str1, char* str2);
+void sort (int selection);
+void reverse ();
 
 thePeople head; //struct pointer for the first struct, global scope to keep it accessible in all functions
 int Ppl = 0;; //global scope integer for how many people exist within the linked list
@@ -58,147 +60,23 @@ int main() {
 			break;
 	}
 	
-	AskOrder: puts("\nDo you want to order this data according to a specific field(y/n): ");
+	AskOrder: puts("\n\nDo you want to order this data according to a specific field(y/n): ");
 	char order = 0;
 	scanf (" %c", &order);
+	
 	if (order == 'y') {
 		Ordering: puts("\nAccording to what field would like the data sorted:");
 		puts("\n\t(1) First Name \n\t(2) Middle Initial \n\t(3) Last Name \n\t(4) Age \n\t(5) City \n\t(6) Country\n");
 		int choice2;
 		scanf ("%i", &choice2);
-		switch (choice2){
-			case 1: 
-				for (int loops = 0; loops < Ppl-1; loops++) {
-					for (int iter = 0; iter < Ppl-1-loops; iter++) {
-						thePeople temporary1 = head;
-						thePeople temporary2;
-						for (int list = 0; list < iter; list++) {
-							if (list == (iter - 1)) //remember the item before the current item in case of swap
-								temporary2 = temporary1;
-							temporary1 = temporary1->next;
-						}
-						if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
-							swap (temporary1, temporary2);
-						else if (compare(temporary1->firstName, temporary1->next->firstName) == 0) {
-							if (temporary1->midInitial > temporary1->next->midInitial)
-								swap(temporary1, temporary2);
-							else if (temporary1->midInitial == temporary1->next->midInitial) {
-								if (compare(temporary1->lastName, temporary1->next->lastName) > 0)
-									swap(temporary1, temporary2);
-							}
-						}
-					}
-				}
-				break;
-			case 2: 
-				for (int loops = 0; loops < Ppl-1; loops++) {
-					for (int iter = 0; iter < Ppl-1-loops; iter++) {
-						thePeople temporary1 = head;
-						thePeople temporary2;
-						for (int list = 0; list < iter; list++) {
-							if (list == (iter - 1)) //remember the item before the current item in case of swap
-								temporary2 = temporary1;
-							temporary1 = temporary1->next;
-						}
-						if (temporary1->midInitial > temporary1->next->midInitial)
-							swap (temporary1, temporary2);
-						else if (temporary1->midInitial == temporary1->next->midInitial) {
-							if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
-								swap(temporary1, temporary2);
-							else if (compare(temporary1->firstName, temporary1->next->firstName) == 0) {
-								if (compare(temporary1->lastName, temporary1->next->lastName) > 0)
-									swap(temporary1, temporary2);
-							}
-						}
-					}
-				}
-				break;
-			case 3: 
-				for (int loops = 0; loops < Ppl-1; loops++) {
-					for (int iter = 0; iter < Ppl-1-loops; iter++) {
-						thePeople temporary1 = head;
-						thePeople temporary2;
-						for (int list = 0; list < iter; list++) {
-							if (list == (iter - 1)) //remember the item before the current item in case of swap
-								temporary2 = temporary1;
-							temporary1 = temporary1->next;
-						}
-						if (compare(temporary1->lastName, temporary1->next->lastName) > 0)
-							swap (temporary1, temporary2);
-						else if (compare(temporary1->lastName, temporary1->next->lastName) == 0) {
-							if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
-									swap(temporary1, temporary2);
-							else if (compare(temporary1->firstName, temporary1->next->firstName) == 0) {
-								if (temporary1->midInitial > temporary1->next->midInitial)
-									swap(temporary1, temporary2);	
-							}
-						}
-					}
-				}
-				break;
-			case 4: 
-				for (int sets = 0; sets < Ppl-1; sets++) {
-					for (int reps = 0; reps < Ppl-1-sets; reps++){
-						thePeople temporary1 = head;
-						thePeople temporary2;
-						for (int list = 0; list < reps; list++) {
-							if (list == (reps - 1)) //remember the item before the current item in case of swap
-								temporary2 = temporary1;
-							temporary1 = temporary1->next;
-						}
-						if (temporary1->age > temporary1->next->age)
-							swap(temporary1, temporary2);
-					}
-				}
-				break;
-			case 5: 
-				for (int loops = 0; loops < Ppl-1; loops++) {
-					for (int iter = 0; iter < Ppl-1-loops; iter++) {
-						thePeople temporary1 = head;
-						thePeople temporary2;
-						for (int list = 0; list < iter; list++) {
-							if (list == (iter - 1)) //remember the item before the current item in case of swap
-								temporary2 = temporary1;
-							temporary1 = temporary1->next;
-						}
-						if (compare(temporary1->city, temporary1->next->city) > 0)
-							swap (temporary1, temporary2);
-						else if (compare(temporary1->city, temporary1->next->city) == 0) {
-							if (compare(temporary1->country, temporary1->next->country) > 0)
-								swap(temporary1, temporary2);
-						}
-					}
-				}
-				break;
-			case 6: 
-				for (int loops = 0; loops < Ppl-1; loops++) {
-					for (int iter = 0; iter < Ppl-1-loops; iter++) {
-						thePeople temporary1 = head;
-						thePeople temporary2;
-						for (int list = 0; list < iter; list++) {
-							if (list == (iter - 1)) //remember the item before the current item in case of swap
-								temporary2 = temporary1;
-							temporary1 = temporary1->next;
-						}
-						if (compare(temporary1->country, temporary1->next->country) > 0)
-							swap (temporary1, temporary2);
-						else if (compare(temporary1->country, temporary1->next->country) == 0) {
-							if (compare(temporary1->city, temporary1->next->city) > 0)
-								swap(temporary1, temporary2);
-						}
-					}
-				}
-				break;
-			default:
-				puts ("\nSorry wrong choice entered, try again\n");
-				goto Ordering;
-		}
-	} else if (order == 'n'){
+		sort(choice2);
+	} else if (order == 'n') {
+		printf ("\nData has been kept the same");
 		goto nextStep;
 	} else if (order == 'q') 
 		return -1;
 	else {
-		puts ("Wrong input entered, try again");
+		puts ("\nWrong input entered, try again");
 		goto AskOrder;
 	}
 	nextStep: ;
@@ -212,6 +90,31 @@ int main() {
 			break;
 	}
 	
+	AskReverse: puts("\n\nWould you like it sorted in the opposite matter (descending)(y/n): ") ;
+	char opposite = 0;
+	scanf (" %c", &opposite);
+	
+	if (opposite == 'y')
+		reverse();
+	else if (opposite == 'n') {
+		printf ("\nData has been kept the same");
+		goto lastStep;
+	} else {
+		puts ("\nWrong input has been entered, try again");
+		goto AskReverse;
+	}
+	
+	lastStep: ;
+	
+	toPrint = head;
+	for (int reading2 = 0; reading2 < Ppl; reading2++) {
+		printf ("\nPerson %i: %s %c %s %i %s %s", reading2+1, toPrint->firstName,\
+		toPrint->midInitial, toPrint->lastName, toPrint->age, toPrint->city, toPrint->country);
+		toPrint = toPrint->next;
+		if (toPrint == NULL)
+			break;
+	}
+
 	return 0;
 }
 
@@ -483,5 +386,162 @@ int compare(char* str1, char* str2) {
 			i++;
 		}
 	return 0;
+}
+
+void sort (int selection) {
+	switch (selection){
+		case 1: 
+			for (int loops = 0; loops < Ppl-1; loops++) {
+				for (int iter = 0; iter < Ppl-1-loops; iter++) {
+					thePeople temporary1 = head;
+					thePeople temporary2;
+					for (int list = 0; list < iter; list++) {
+						if (list == (iter - 1)) //remember the item before the current item in case of swap
+							temporary2 = temporary1;
+						temporary1 = temporary1->next;
+					}
+					if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
+						swap (temporary1, temporary2);
+					else if (compare(temporary1->firstName, temporary1->next->firstName) == 0) {
+						if (temporary1->midInitial > temporary1->next->midInitial)
+							swap(temporary1, temporary2);
+						else if (temporary1->midInitial == temporary1->next->midInitial) {
+							if (compare(temporary1->lastName, temporary1->next->lastName) > 0)
+								swap(temporary1, temporary2);
+						}
+					}
+				}
+			}
+			break;
+		case 2: 
+			for (int loops = 0; loops < Ppl-1; loops++) {
+				for (int iter = 0; iter < Ppl-1-loops; iter++) {
+					thePeople temporary1 = head;
+					thePeople temporary2;
+					for (int list = 0; list < iter; list++) {
+						if (list == (iter - 1)) //remember the item before the current item in case of swap
+							temporary2 = temporary1;
+						temporary1 = temporary1->next;
+					}
+					if (temporary1->midInitial > temporary1->next->midInitial)
+						swap (temporary1, temporary2);
+					else if (temporary1->midInitial == temporary1->next->midInitial) {
+						if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
+							swap(temporary1, temporary2);
+						else if (compare(temporary1->firstName, temporary1->next->firstName) == 0) {
+							if (compare(temporary1->lastName, temporary1->next->lastName) > 0)
+								swap(temporary1, temporary2);
+						}
+					}
+				}
+			}
+			break;
+		case 3: 
+			for (int loops = 0; loops < Ppl-1; loops++) {
+				for (int iter = 0; iter < Ppl-1-loops; iter++) {
+					thePeople temporary1 = head;
+					thePeople temporary2;
+					for (int list = 0; list < iter; list++) {
+						if (list == (iter - 1)) //remember the item before the current item in case of swap
+							temporary2 = temporary1;
+						temporary1 = temporary1->next;
+					}
+					if (compare(temporary1->lastName, temporary1->next->lastName) > 0)
+						swap (temporary1, temporary2);
+					else if (compare(temporary1->lastName, temporary1->next->lastName) == 0) {
+						if (compare(temporary1->firstName, temporary1->next->firstName) > 0)
+								swap(temporary1, temporary2);
+						else if (compare(temporary1->firstName, temporary1->next->firstName) == 0) {
+							if (temporary1->midInitial > temporary1->next->midInitial)
+								swap(temporary1, temporary2);	
+						}
+					}
+				}
+			}
+			break;
+		case 4: 
+			for (int sets = 0; sets < Ppl-1; sets++) {
+				for (int reps = 0; reps < Ppl-1-sets; reps++){
+					thePeople temporary1 = head;
+					thePeople temporary2;
+					for (int list = 0; list < reps; list++) {
+						if (list == (reps - 1)) //remember the item before the current item in case of swap
+							temporary2 = temporary1;
+						temporary1 = temporary1->next;
+					}
+					if (temporary1->age > temporary1->next->age)
+						swap(temporary1, temporary2);
+				}
+			}
+			break;
+		case 5: 
+			for (int loops = 0; loops < Ppl-1; loops++) {
+				for (int iter = 0; iter < Ppl-1-loops; iter++) {
+					thePeople temporary1 = head;
+					thePeople temporary2;
+					for (int list = 0; list < iter; list++) {
+						if (list == (iter - 1)) //remember the item before the current item in case of swap
+							temporary2 = temporary1;
+						temporary1 = temporary1->next;
+					}
+					if (compare(temporary1->city, temporary1->next->city) > 0)
+						swap (temporary1, temporary2);
+					else if (compare(temporary1->city, temporary1->next->city) == 0) {
+						if (compare(temporary1->country, temporary1->next->country) > 0)
+							swap(temporary1, temporary2);
+					}
+				}
+			}
+			break;
+		case 6: 
+			for (int loops = 0; loops < Ppl-1; loops++) {
+				for (int iter = 0; iter < Ppl-1-loops; iter++) {
+					thePeople temporary1 = head;
+					thePeople temporary2;
+					for (int list = 0; list < iter; list++) {
+						if (list == (iter - 1)) //remember the item before the current item in case of swap
+							temporary2 = temporary1;
+						temporary1 = temporary1->next;
+					}
+					if (compare(temporary1->country, temporary1->next->country) > 0)
+						swap (temporary1, temporary2);
+					else if (compare(temporary1->country, temporary1->next->country) == 0) {
+						if (compare(temporary1->city, temporary1->next->city) > 0)
+							swap(temporary1, temporary2);
+					}
+				}
+			}
+			break;
+		default:
+			puts ("\nSorry wrong choice entered, try again\n");
+			return;
+	}
+}
+
+void reverse () {//copies over all the struct pointers into an array and then reverses the list order
+	thePeople* copied;
+	copied = (thePeople*) malloc(Ppl*sizeof(thePeople)); //create array of struct pointers on heap
+
+	thePeople organize = head;
+	int items = 0;
+	
+	while (organize != NULL) {
+		copied[items] = organize;
+		organize = organize->next;
+		items++;
+		if (items > Ppl) {
+			printf ("\nAn error occured during the reverse function");
+			return;
+		}
+	}
+	
+	head = copied[Ppl-1];//last item in the struct becomes head
+	thePeople reverser = head; //new temp struct pointer used to traverse list and change order
+	
+	for (int a = 0; a < Ppl-1; a++) {
+		reverser->next = copied[Ppl-2-a]; //start reversing order
+		reverser = reverser->next;
+	}
+	reverser->next = NULL; //originally the head of the list, now the end of the list
 }
 
