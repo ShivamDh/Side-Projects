@@ -14,12 +14,14 @@ typedef struct Person {
 	struct Person* next; //the struct pointer for the next item in the list
 }People, *thePeople;
 
+void print ();
 int read ();
 int read(const char* iFile);
 void swap (thePeople temporary1, thePeople temporary2);
 int compare(char* str1, char* str2);
 void sort (int selection);
 void reverse ();
+void writing();
 
 thePeople head; //struct pointer for the first struct, global scope to keep it accessible in all functions
 int Ppl = 0;; //global scope integer for how many people exist within the linked list
@@ -51,14 +53,7 @@ int main() {
 		goto DataEntering;
 	}
 	
-	thePeople toPrint = head;
-	for (int reading = 0; reading < Ppl; reading++) {
-		printf ("\nPerson %i: %s %c %s %i %s %s", reading, toPrint->firstName,\
-		toPrint->midInitial, toPrint->lastName, toPrint->age, toPrint->city, toPrint->country);
-		toPrint = toPrint->next;
-		if (toPrint == NULL)
-			break;
-	}
+	print();
 	
 	AskOrder: puts("\n\nDo you want to order this data according to a specific field(y/n): ");
 	char order = 0;
@@ -79,16 +74,7 @@ int main() {
 		puts ("\nWrong input entered, try again");
 		goto AskOrder;
 	}
-	nextStep: ;
-	
-	toPrint = head;
-	for (int reading2 = 0; reading2 < Ppl; reading2++) {
-		printf ("\nPerson %i: %s %c %s %i %s %s", reading2+1, toPrint->firstName,\
-		toPrint->midInitial, toPrint->lastName, toPrint->age, toPrint->city, toPrint->country);
-		toPrint = toPrint->next;
-		if (toPrint == NULL)
-			break;
-	}
+	nextStep: print();
 	
 	AskReverse: puts("\n\nWould you like it sorted in the opposite matter (descending)(y/n): ") ;
 	char opposite = 0;
@@ -104,18 +90,34 @@ int main() {
 		goto AskReverse;
 	}
 	
-	lastStep: ;
+	print();
 	
-	toPrint = head;
-	for (int reading2 = 0; reading2 < Ppl; reading2++) {
-		printf ("\nPerson %i: %s %c %s %i %s %s", reading2+1, toPrint->firstName,\
+	
+	
+	lastStep: puts ("\nWould you like this data transfered into a csv file?(y/n)");
+	char choice3 = 0;
+	scanf(" %c", &choice3);
+	if (choice3 == 'y') {
+		writing();
+	} else if (choice3 == 'n')
+		return 0;
+	else {
+		puts ("An incorrect choice was entered, try again");
+		goto lastStep;
+	}
+
+	return 0;
+}
+
+void print () {
+	thePeople toPrint = head;
+	for (int reading = 0; reading < Ppl; reading++) {
+		printf ("\nPerson %i: %s %c %s %i %s %s", reading+1, toPrint->firstName,\
 		toPrint->midInitial, toPrint->lastName, toPrint->age, toPrint->city, toPrint->country);
 		toPrint = toPrint->next;
 		if (toPrint == NULL)
 			break;
 	}
-
-	return 0;
 }
 
 int read () {
@@ -261,7 +263,6 @@ int read(const char* iFile) { //reading the file if provided
 	FILE* OpenFile;
 	OpenFile = fopen(iFile, "r");
 
-	
 	if (OpenFile == NULL) { //error check to ensure file opened properly
 		printf ("Input file was not opened\n");
 		return -1;
@@ -545,3 +546,18 @@ void reverse () {//copies over all the struct pointers into an array and then re
 	reverser->next = NULL; //originally the head of the list, now the end of the list
 }
 
+void writing () {
+	FILE* writeFile;
+	writeFile = fopen("groupOrganizer.csv", "w");
+	
+	thePeople exporting = head;
+	for (int writing = 0; writing < Ppl; writing++) {
+		fprintf (writeFile, "Person %i: ,%s ,%c ,%s ,%i ,%s ,%s\n", writing+1, exporting->firstName,\
+		exporting->midInitial, exporting->lastName, exporting->age, exporting->city, exporting->country);
+		exporting = exporting->next;
+		if (exporting == NULL)
+			break;
+	}
+	
+	fclose(writeFile);
+}
