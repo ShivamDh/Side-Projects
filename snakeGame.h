@@ -17,8 +17,10 @@ class Snake {
 		int gameHeight;
 		snakeDirection direction;
 		int xCoor, yCoor;
+		int levelUpx, levelUpy;
 		int score;
 		int tailLength;
+		int tailCoordinates[2][100]; //create a 2x100 table to store previous coordinate of tailCoordinates
 		void initialGame();
 		void drawCanvas();
 		void keyInput ();
