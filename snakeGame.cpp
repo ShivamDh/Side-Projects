@@ -69,7 +69,52 @@ void Snake::drawCanvas(){
 }
 
 void Snake::keyInput () {
-	
+	if (_kbhit()) {
+		switch (_getch()) {
+			case 97: //capital letter A
+			case 65: //lowercase letter a
+				dir = LEFT;
+				break;
+			case 100: //capital letter D
+			case 68: //lowercase letter d
+				dir = RIGHT;
+				break;
+			case 119: //capital letter W
+			case 87: //lowercase letter w
+				dir = UP;
+				break;
+			case 115: //capital letter S
+			case 83: //lowercase letter s
+				dir = DOWN;
+				break;
+			case 224: //arrow key inputs are used
+				switch (_getch()) {
+					case 75:
+						dir = LEFT;
+						break;
+					case 77:
+						dir = RIGHT;
+						break;
+					case 72:
+						dir = UP;
+						break;
+					case 80:
+						dir = DOWN;
+						break;
+					default:
+						cout << endl << "Wrong key is being pressed" << endl;
+						break;
+				}
+				break;
+			case 27: //end program buttons
+			case 81: //include Esc, 'q', Q, Ctr+C 
+			case 113:
+			case 3: 
+				gameRunning = false;
+				break;
+		}
+	} else 
+		return;
 }
 
 void Snake::gameWork () {
@@ -81,6 +126,11 @@ void gamePlay() {
 }
 
 Snake::Snake () { //default constructor
+	gameWidth = 20;
+	gameHeight = 20;
+	tailLength = 0;
+	setup ();
+	gamePlay();
 }
 
 Snake::Snake(int requiredWidth, int requiredHeight) {
