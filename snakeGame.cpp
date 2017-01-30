@@ -13,19 +13,18 @@ int Snake::getScore() {
 
 void Snake:: initialGame() {
 	//start tje game at halt posiiton
-			isGameRunning = true;
-			dir = STOP;
+	isGameRunning = true;
+	dir = STOP;
+	//initial snake coordinates
+	xCoor = gameWidth / 4;
+	yCoor = gameHeight / 4;
 	
-			//initial snake coordinates
-			xCoor = gameWidth / 4;
-			yCoor = gameHeight / 4;
-			
-			//initial fruit coordinates
-			srand(time(NULL)); //use seeds to ensure that truly random values are generated
-			levelUpx = rand() % gameWidth;
-			levelUpy = rand() % gameHeight;
-			
-			score = 0;
+	//initial fruit coordinates
+	srand(time(NULL)); //use seeds to ensure that truly random values are generated
+	levelUpx = rand() % gameWidth;
+	levelUpy = rand() % gameHeight;
+	
+	score = 0;
 }
 
 void Snake::drawCanvas(){
@@ -110,7 +109,7 @@ void Snake::keyInput () {
 			case 81: //include Esc, 'q', Q, Ctr+C 
 			case 113:
 			case 3: 
-				gameRunning = false;
+				isGameRunning = false;
 				break;
 		}
 	} else 
@@ -118,11 +117,72 @@ void Snake::keyInput () {
 }
 
 void Snake::gameWork () {
+	int prevX = tailCoordinates[0][0];
+	int prevY = tailCoordinates[1][0];
+	int prev2X, prev2Y;
+	tailCoordinates[0][0] = x;
+	tailCoordinates[1][0] = y;
+	for (int a = 1; a < tailLength; a++) {
+		prev2X = tailCoordinates[0][a];
+		prev2Y = tailCoordinates[1][a];
+		tailCoordinates[0][a] = prevX;
+		tailCoordinates[1][a] = prevY;
+		prevX = prev2X;
+		prevY = prev2Y;
+	}
 	
+	switch(dir) {
+		case LEFT: 
+			x--;
+			break;
+		case RIGHT:
+			x++;
+			break;
+		case UP:
+			y--;
+			break;
+		case DOWN:
+			y++;
+			break;
+		default:
+			break;
+	}
+	if (x >= 2*width-1)
+		x = 0;
+	else if (x < 0)
+		x = 2*width-2;
+	if (y >= height)
+		y = 0;
+	else if (y < 0)
+		y = height;
+		
+	for (int c = 0; c < tailLength; c++) {
+		if (tailCoordinates[0][c] == x && tailCoordinates[1][c] == y)
+			isGameRunning = false;
+	}
+	
+	if (x == fx && y == fy) {
+		score += 10;
+		srand(time(NULL));
+		fx = rand() % width;
+		fy = rand() % height;
+		tailLength++;
+	}
 }
 
 void gamePlay() {
-	
+	while (isGameRunning) {
+		system("cls"); //clear console screen for snake game window to appear
+		cout << endl << "  A CLASSIC GAME OF SNAKE" << endl << endl;
+		for (int i = 0; i < width/12; i++)
+			cout << "\t";
+		cout << "Created by Shivam Dharme" << endl;
+		draw();
+		input();
+		logic();
+		cout << endl << endl << "Press Esc or quit to exit the game anytime" << endl;
+		cout << "Control the snake using Left/Right/Up/Down keys" << endl;
+	}
 }
 
 Snake::Snake () { //default constructor
