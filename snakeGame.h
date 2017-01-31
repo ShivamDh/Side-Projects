@@ -8,7 +8,6 @@ class Snake {
 		Snake ();
 		Snake (const int requiredWidth, const int requiredHeight);
 		~Snake();
-		int getScore();
 	
 	private:
 		//paramters
