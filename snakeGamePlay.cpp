@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <time.h>
 #include <vector>
+#include "snakeGame.h"
 using namespace std;
 
 
