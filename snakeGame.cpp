@@ -7,10 +7,6 @@ using namespace std;
 
 
 
-int Snake::getScore() {
-	return score;
-}
-
 void Snake:: initialGame() {
 	//start tje game at halt posiiton
 	isGameRunning = true;
@@ -194,9 +190,21 @@ Snake::Snake () { //default constructor
 }
 
 Snake::Snake(int requiredWidth, int requiredHeight) {
-	
+	width = requiredWidth;
+	height = requiredHeight;
+	tailLength = 0;
+	setup ();
+	gamePlay();
 }
 
 Snake::~Snake {
-	
+	//just some ending dialouge
+	if (score < 100)
+		cout << endl << "Can't you do better than that?" << endl;
+	else if (score < 250)
+		cout << endl << "That's a good score, think you can beat that?" << endl;
+	else if (score < 500)
+		cout << endl << "Very impressive score, tough to top" << endl;
+	else 
+		cout << endl << "Insane score, no one can beat that!" << endl;
 }
