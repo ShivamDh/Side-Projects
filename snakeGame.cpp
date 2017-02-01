@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <time.h>
+#include <deque>
 #include "snakeGame.h"
 using namespace std;
-
 
 
 void Snake:: initialGame() {
@@ -37,14 +37,14 @@ void Snake::drawCanvas(){
 				cout << "  |";
 			
 			if (k == yCoor && l == xCoor)
-				cout << "O";
+				cout << snakeHead;
 			else if (l == levelUpx && k == levelUpy)
 				cout << "F";
 			else {
 				bool printedTail = false;
 				for (int b = 0; b < tailLength; b++) {
 					if (tailCoordinates[0][b] == l && tailCoordinates[1][b] == k) {
-						cout << "o";
+						cout << snakeTail;
 						printedTail = true;
 					}
 				}
@@ -113,18 +113,19 @@ void Snake::keyInput () {
 }
 
 void Snake::gameWork () {
-	int prevX = tailCoordinates[0][0];
-	int prevY = tailCoordinates[1][0];
-	int prev2X, prev2Y;
-	tailCoordinates[0][0] = xCoor;
-	tailCoordinates[1][0] = yCoor;
-	for (int a = 1; a < tailLength; a++) {
-		prev2X = tailCoordinates[0][a];
-		prev2Y = tailCoordinates[1][a];
-		tailCoordinates[0][a] = prevX;
-		tailCoordinates[1][a] = prevY;
-		prevX = prev2X;
-		prevY = prev2Y;
+	if (xCoor == levelUpx && yCoor == levelUpy) {
+		score += 10;
+		srand(time(NULL));
+		tailCoordinates[0].push_front(xCoor);
+		tailCoordinates[1].push_front(yCoor);
+		levelUpx = rand() % gameWidth;
+		levelUpy = rand() % gameHeight;
+		tailLength++;
+	} else {
+		tailCoordinates[0].push_front(xCoor);
+		tailCoordinates[1].push_front(yCoor);
+		tailCoordinates[0].pop_back();
+		tailCoordinates[1].pop_back();		
 	}
 	
 	switch(direction) {
@@ -157,13 +158,6 @@ void Snake::gameWork () {
 			isGameRunning = false;
 	}
 	
-	if (xCoor == levelUpx && yCoor == levelUpy) {
-		score += 10;
-		srand(time(NULL));
-		levelUpx = rand() % gameWidth;
-		levelUpy = rand() % gameHeight;
-		tailLength++;
-	}
 }
 
 void Snake::gamePlay() {
@@ -185,6 +179,8 @@ Snake::Snake () { //default constructor
 	gameWidth = 20;
 	gameHeight = 20;
 	tailLength = 0;
+	snakeHead = 'O';
+	snakeTail = 'o';
 	initialGame();
 	gamePlay();
 }
@@ -193,6 +189,18 @@ Snake::Snake(int requiredWidth, int requiredHeight) {
 	gameWidth = requiredWidth;
 	gameHeight = requiredHeight;
 	tailLength = 0;
+	snakeHead = 'O';
+	snakeTail = 'o';
+	initialGame();
+	gamePlay();
+}
+
+Snake::Snake(int requiredWidth, int requiredHeight, char specifiedHead, char specifiedTail) {
+	gameWidth = requiredWidth;
+	gameHeight = requiredHeight;
+	tailLength = 0;
+	snakeHead = specifiedHead;
+	snakeTail = specifiedTail;
 	initialGame();
 	gamePlay();
 }
