@@ -10,7 +10,7 @@ using namespace std;
 void Snake:: initialGame() {
 	//start tje game at halt posiiton
 	isGameRunning = true;
-	dir = STOP;
+	direction = STOP;
 	//initial snake coordinates
 	xCoor = gameWidth / 4;
 	yCoor = gameHeight / 4;
@@ -68,33 +68,33 @@ void Snake::keyInput () {
 		switch (_getch()) {
 			case 97: //capital letter A
 			case 65: //lowercase letter a
-				dir = LEFT;
+				direction = LEFT;
 				break;
 			case 100: //capital letter D
 			case 68: //lowercase letter d
-				dir = RIGHT;
+				direction = RIGHT;
 				break;
 			case 119: //capital letter W
 			case 87: //lowercase letter w
-				dir = UP;
+				direction = UP;
 				break;
 			case 115: //capital letter S
 			case 83: //lowercase letter s
-				dir = DOWN;
+				direction = DOWN;
 				break;
 			case 224: //arrow key inputs are used
 				switch (_getch()) {
 					case 75:
-						dir = LEFT;
+						direction = LEFT;
 						break;
 					case 77:
-						dir = RIGHT;
+						direction = RIGHT;
 						break;
 					case 72:
-						dir = UP;
+						direction = UP;
 						break;
 					case 80:
-						dir = DOWN;
+						direction = DOWN;
 						break;
 					default:
 						cout << endl << "Wrong key is being pressed" << endl;
@@ -116,8 +116,8 @@ void Snake::gameWork () {
 	int prevX = tailCoordinates[0][0];
 	int prevY = tailCoordinates[1][0];
 	int prev2X, prev2Y;
-	tailCoordinates[0][0] = x;
-	tailCoordinates[1][0] = y;
+	tailCoordinates[0][0] = xCoor;
+	tailCoordinates[1][0] = yCoor;
 	for (int a = 1; a < tailLength; a++) {
 		prev2X = tailCoordinates[0][a];
 		prev2Y = tailCoordinates[1][a];
@@ -127,55 +127,55 @@ void Snake::gameWork () {
 		prevY = prev2Y;
 	}
 	
-	switch(dir) {
+	switch(direction) {
 		case LEFT: 
-			x--;
+			xCoor--;
 			break;
 		case RIGHT:
-			x++;
+			xCoor++;
 			break;
 		case UP:
-			y--;
+			yCoor--;
 			break;
 		case DOWN:
-			y++;
+			yCoor++;
 			break;
 		default:
 			break;
 	}
-	if (x >= 2*width-1)
-		x = 0;
-	else if (x < 0)
-		x = 2*width-2;
-	if (y >= height)
-		y = 0;
-	else if (y < 0)
-		y = height;
+	if (xCoor >= 2*gameWidth-1)
+		xCoor = 0;
+	else if (xCoor < 0)
+		xCoor = 2*gameWidth-2;
+	if (yCoor >= gameHeight)
+		yCoor = 0;
+	else if (yCoor < 0)
+		yCoor = gameHeight;
 		
 	for (int c = 0; c < tailLength; c++) {
-		if (tailCoordinates[0][c] == x && tailCoordinates[1][c] == y)
+		if (tailCoordinates[0][c] == xCoor && tailCoordinates[1][c] == yCoor)
 			isGameRunning = false;
 	}
 	
-	if (x == fx && y == fy) {
+	if (xCoor == levelUpx && yCoor == levelUpy) {
 		score += 10;
 		srand(time(NULL));
-		fx = rand() % width;
-		fy = rand() % height;
+		levelUpx = rand() % gameWidth;
+		levelUpy = rand() % gameHeight;
 		tailLength++;
 	}
 }
 
-void gamePlay() {
+void Snake::gamePlay() {
 	while (isGameRunning) {
 		system("cls"); //clear console screen for snake game window to appear
 		cout << endl << "  A CLASSIC GAME OF SNAKE" << endl << endl;
-		for (int i = 0; i < width/12; i++)
+		for (int i = 0; i < gameWidth/12; i++)
 			cout << "\t";
 		cout << "Created by Shivam Dharme" << endl;
-		draw();
-		input();
-		logic();
+		drawCanvas();
+		keyInput();
+		gameWork();
 		cout << endl << endl << "Press Esc or quit to exit the game anytime" << endl;
 		cout << "Control the snake using Left/Right/Up/Down keys" << endl;
 	}
@@ -185,19 +185,19 @@ Snake::Snake () { //default constructor
 	gameWidth = 20;
 	gameHeight = 20;
 	tailLength = 0;
-	setup ();
+	initialGame();
 	gamePlay();
 }
 
 Snake::Snake(int requiredWidth, int requiredHeight) {
-	width = requiredWidth;
-	height = requiredHeight;
+	gameWidth = requiredWidth;
+	gameHeight = requiredHeight;
 	tailLength = 0;
-	setup ();
+	initialGame();
 	gamePlay();
 }
 
-Snake::~Snake {
+Snake::~Snake () {
 	//just some ending dialouge
 	if (score < 100)
 		cout << endl << "Can't you do better than that?" << endl;
