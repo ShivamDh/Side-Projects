@@ -1,8 +1,5 @@
 #include <iostream>
 #include <stdlib.h>
-#include <conio.h>
-#include <time.h>
-#include <vector>
 #include "snakeGame.h"
 using namespace std;
 
@@ -30,12 +27,40 @@ int main () {
 			cout << endl << "Sorry, your specified height is too small, try again";
 			goto AskHeight;
 		}
-		Snake game(newWidth, newHeight);
+		
+		cout << endl << "Would you like to change the head of the snake to something else? (Y/N)";
+		cout << endl << "\t Current Head Symbol: O\n";
+		char choice;
+		char head = '\0'; //initializing a null character tail to start off
+		cin >> choice;
+		if (choice == 'y' || choice == 'Y'){
+			cout << "Type the symbol (1 character) you choose as your snake head: ";
+			cin >> head;
+		}
+		
+		cout << endl << "Would you like to change the tail of the snake to something else? (Y/N)";
+		cout << endl << "\t Current Head Symbol: o\n";
+		char choice2;
+		char tail = '\0'; //initializing a null character tail to start off
+		cin >> choice2;
+		if (choice2 == 'y' || choice2 == 'Y'){
+			cout << "Type the symbol (1 character) you choose as your snake tail: ";
+			cin >> tail;
+		} 
+		
+		if (head == '\0' && tail == '\0') 
+			Snake game(newWidth, newHeight);
+		else if (head == '\0')
+			Snake game (newWidth, newHeight, 'O', tail);
+		else if (tail == '\0')
+			Snake game (newWidth, newHeight, head, 'o');
+		else
+			Snake game (newWidth, newHeight, head, tail);
+		
+		
 	} else if (choice == 2) {
 		Snake game;
 	}
 	
-	
-	
-	return 0;
+	gameFinished: return 0;
 }
