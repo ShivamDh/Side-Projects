@@ -24,27 +24,27 @@ void Snake:: initialGame() {
 }
 
 void Snake::drawCanvas(){
-	cout << "  ";
+	cout << "  "; //draw upper boundary
 	for (int i = 0; i < gameWidth+1; i++) {
 		cout << "--";
 	}
 	
-	cout << "-" << endl;
+	cout << "-" << endl; //compensation character for right corner
 	
-	for (int k = 0; k < gameHeight; k++) {
+	for (int k = 0; k < gameHeight; k++) { //drawing the 2nd to n-1 rows of the game
 		for (int l = 0; l < 2*gameWidth; l++) {
 			if (l == 0 || l == 2*gameWidth-1)
-				cout << "  |";
+				cout << "  |"; //left boundary
 			
 			if (k == yCoor && l == xCoor)
-				cout << snakeHead;
+				cout << snakeHead; //draw snakehead if coordinates match
 			else if (l == levelUpx && k == levelUpy)
-				cout << "F";
+				cout << "F"; //draw levelup symbol if coordinates match
 			else {
 				bool printedTail = false;
 				for (int b = 0; b < tailLength; b++) {
 					if (tailCoordinates[0][b] == l && tailCoordinates[1][b] == k) {
-						cout << snakeTail;
+						cout << snakeTail; //draw snaketail if coordinates match
 						printedTail = true;
 					}
 				}
@@ -54,13 +54,13 @@ void Snake::drawCanvas(){
 		}
 		cout << endl;
 	}
-	cout << "  ";
+	cout << "  "; //drawing lower boundary/wall
 	for (int j = 0; j < gameWidth+1; j++) {
 		cout << "--";
 	}
 	cout << "-" << endl;
 	
-	cout << "Score: " << score;
+	cout << "Score: " << score; //display score
 }
 
 void Snake::keyInput () {
@@ -107,28 +107,31 @@ void Snake::keyInput () {
 			case 3: 
 				isGameRunning = false;
 				break;
+			case 9: //tab key, wanting to change game settings
+				edit();
+				break;
 		}
 	} else 
 		return;
 }
 
 void Snake::gameWork () {
-	if (xCoor == levelUpx && yCoor == levelUpy) {
+	if (xCoor == levelUpx && yCoor == levelUpy) { //if snake moves over the level up icon
 		score += 10;
 		srand(time(NULL));
-		tailCoordinates[0].push_front(xCoor);
+		tailCoordinates[0].push_front(xCoor); //add one more to the tail coordinates
 		tailCoordinates[1].push_front(yCoor);
-		levelUpx = rand() % gameWidth;
+		levelUpx = rand() % gameWidth; //get a new location for level up icon
 		levelUpy = rand() % gameHeight;
 		tailLength++;
 	} else {
-		tailCoordinates[0].push_front(xCoor);
-		tailCoordinates[1].push_front(yCoor);
-		tailCoordinates[0].pop_back();
+		tailCoordinates[0].push_front(xCoor); //keep adding the latest coordinate to tail coordintaes
+		tailCoordinates[1].push_front(yCoor); //this is the snake head that now becomes the first tail
+		tailCoordinates[0].pop_back(); //remove the coordinates for the last tail section
 		tailCoordinates[1].pop_back();		
 	}
 	
-	switch(direction) {
+	switch(direction) { //what direction the snake is moving in
 		case LEFT: 
 			xCoor--;
 			break;
@@ -144,16 +147,17 @@ void Snake::gameWork () {
 		default:
 			break;
 	}
-	if (xCoor >= 2*gameWidth-1)
-		xCoor = 0;
-	else if (xCoor < 0)
-		xCoor = 2*gameWidth-2;
-	if (yCoor >= gameHeight)
-		yCoor = 0;
-	else if (yCoor < 0)
-		yCoor = gameHeight;
+	if (xCoor >= 2*gameWidth-1) { //boundary conditions depending on whether warping from one side of the wall to the other is allowed
+		warpWalls ? xCoor = 0 : isGameRunning = false;
+	} else if (xCoor < 0) {
+		warpWalls ? xCoor = 2*gameWidth-2 : isGameRunning = false;
+	} if (yCoor >= gameHeight) {
+		warpWalls ? yCoor = 0 : isGameRunning = false;
+	} else if (yCoor < 0) {
+		warpWalls ? yCoor = gameHeight : isGameRunning = false;
+	}
 		
-	for (int c = 0; c < tailLength; c++) {
+	for (int c = 0; c < tailLength; c++) { //if the snake head runs into the snake tail
 		if (tailCoordinates[0][c] == xCoor && tailCoordinates[1][c] == yCoor)
 			isGameRunning = false;
 	}
@@ -170,12 +174,15 @@ void Snake::gamePlay() {
 		drawCanvas();
 		keyInput();
 		gameWork();
+		//basic game instructions listed below the game display
 		cout << endl << endl << "Press Esc or quit to exit the game anytime" << endl;
+		cout << "Press Tab to edit/change game settings" << endl;
 		cout << "Control the snake using Left/Right/Up/Down keys" << endl;
 	}
 }
 
 Snake::Snake () { //default constructor
+	warpWalls = true; //warping default allowed
 	gameWidth = 20;
 	gameHeight = 20;
 	tailLength = 0;
@@ -185,7 +192,8 @@ Snake::Snake () { //default constructor
 	gamePlay();
 }
 
-Snake::Snake(int requiredWidth, int requiredHeight) {
+Snake::Snake(int requiredWidth, int requiredHeight, bool warp) {
+	warpWalls = warp;
 	gameWidth = requiredWidth;
 	gameHeight = requiredHeight;
 	tailLength = 0;
@@ -195,7 +203,8 @@ Snake::Snake(int requiredWidth, int requiredHeight) {
 	gamePlay();
 }
 
-Snake::Snake(int requiredWidth, int requiredHeight, char specifiedHead, char specifiedTail) {
+Snake::Snake(const int requiredWidth, const int requiredHeight, const char specifiedHead, const char specifiedTail, bool warp) {
+	warpWalls = warp;
 	gameWidth = requiredWidth;
 	gameHeight = requiredHeight;
 	tailLength = 0;
@@ -215,4 +224,48 @@ Snake::~Snake () {
 		cout << endl << "Very impressive score, tough to top" << endl;
 	else 
 		cout << endl << "Insane score, no one can beat that!" << endl;
+}
+
+void Snake::edit() {
+	pickEdit: cout << endl << "What gameplay settings would you like to edit: " << endl;
+	cout << "\t (1) Game Width \n\t (2) Game Height \n\t (3) Head Symbol \n\t (4) Tail Symbol \n\t (5) Boundary Warp";
+	cout << endl;
+	int selection;
+	cin >> selection;
+	switch (selection) { //switch table regarding what game setting user chose the edit
+		case 1:
+			cout << "Original height was: " << gameHeight;
+			cout << endl << "Pick your new height: ";
+			cin >> gameHeight;
+			break;
+		case 2: 
+			cout << "Original width was: " << gameWidth;
+			cout << endl << "Pick your new width: ";
+			cin >> gameWidth;
+			break;
+		case 3: 
+			cout << "Original head symbol was: " << snakeHead;
+			cout << endl << "Pick your new snake head: ";
+			cin >> snakeHead;
+			break;
+		case 4: 
+			cout << "Original tail symbol was: " << snakeTail;
+			cout << endl << "Pick your new snake tail: ";
+			cin >> snakeTail;
+			break;
+		case 5: 
+			warpWalls ^= 1; //flip boolean value
+			cout << "Boundary Warp will now be: ";
+			(warpWalls)? cout << "True" : cout << "False";
+			cout << endl << "Confirm switch with Y/y, abort with N/n:  ";
+			char boolSwitch;
+			cin >> boolSwitch;
+			if (boolSwitch == 'n' || boolSwitch == 'N')
+				warpWalls ^= 1;
+			break;
+		default:
+			cout << endl << "Wrong selection picked, try again: " << endl;
+			goto pickEdit;
+			break;
+	}
 }
