@@ -1,5 +1,0 @@
--This is a sample file that will be read: It's meant to "test" the C program created as to how it analyzes THIS file and the validity of the analysis it provides on the file.
-
-+The file contains %irregular! symbols and words meant to represent <Test> Cases that the program should look out for /when analyzing;
-
-*If all goes well, the program $should$ be able to ~output@ the ^correct number of words & characters as well as an outlook as to the # of average characters (per word).
