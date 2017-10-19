@@ -21,3 +21,7 @@ A hockey statistics program that can be used as data storage and exportation as 
 ### Group Organizer
 
 A small database system I created for data organization and management
+
+### Snake
+
+A fun snake game created in C++ and to be run on the command line. Created fully with object-oriented programming
