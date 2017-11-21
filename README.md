@@ -1,8 +1,6 @@
 # Side-Projects
 
-This repo is just a collection of the mini projects I have worked on during my own time.
-
-The projects have been completed in a variety of languages so feel free to have a look.
+This repo is just a collection of the mini projects I worked on as a beginner software developer on my own time. The projects have mostly been completed in C and C++; to view more Python related projects, visit the Python-Projects repository.
 
 ## Major Projects
 
